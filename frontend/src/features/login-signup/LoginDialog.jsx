@@ -1,10 +1,16 @@
 import { Box, TextField, Typography, styled } from "@mui/material";
-import { useContext, useState } from "react";
+import { Children, createContext, useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import { DataContext } from "./LoginBtn";
+import LoginBtn, { DataContext } from "./LoginBtn";
 import isValidEmail from "../../functions/isEmail";
 import isOkPassword from "../../functions/passwordValidation";
+import axios from 'axios'
+import UsernameProvider from "../../usecontext/UsernameProvider";
+// import { response } from "express";
+
+
+
 
 const DialogContent = styled(Box)`
   min-width: 400px;
@@ -80,7 +86,28 @@ const Error = styled("span")`
   color: red;
 `;
 
-const LoginDialog = () => {
+
+const Success = styled(Box)`
+  margin-top: 0;
+  border-radius: 2px;
+  text-align: center;
+  line-height: 1;
+  font-size: 16px;
+  /* text-transform: capitalize; */
+  ${props=> props.success ?
+  `
+  padding: 4px;
+  background-color:#96c296 ;
+  color: #098609; `
+  :`
+   color:red;
+   `
+   }
+  margin-bottom: 10px;
+`
+
+
+const LoginDialog = ({username,setUsername}) => {
   const { open, handleClose } = useContext(DataContext);
   const showDialogStatus = {
     login: {
@@ -106,13 +133,13 @@ const LoginDialog = () => {
     username: "",
     password: "",
   });
-  console.log(status, "debug");
+  // console.log(status, "debug");
   const handleSignUp = () => {
     setStatus({
       login: { value: false, data: { ...showDialogStatus.login.data } },
       signup: { value: true, data: { ...showDialogStatus.signup.data } },
     });
-    console.log(status, "Main hoo hero");
+    // console.log(status, "Main hoo hero");
   };
 
   const handleLogin = () => {
@@ -129,6 +156,11 @@ const LoginDialog = () => {
     username: "",
     password: "",
   });
+  const [loginFormError, setLoginFormError] = useState({
+    email: "",
+    password: "",
+  });
+  const [infoMessage,setInfoMessage] = useState({success:false,message:''})
 
   const handleValidation = (e) => {
     if (e.target.name == "phone") {
@@ -191,9 +223,45 @@ const LoginDialog = () => {
     }
     console.log(formError, "k xa");
   };
-  const handleSignSubmit = (e) => {
+
+  const [loginData,setLoginData] = useState({
+    email:'',
+    password:'',
+  })
+
+  
+  const handleLoginValidation =(e)=>{
+    e.preventDefault()
+    if (e.target.name == "email") 
+    {
+      setLoginData((loginData)=>({...loginData,email:e.target.value}))
+      console.log("Gandu hai tu")
+      
+      if(!isValidEmail(loginData.email)) {
+        setLoginFormError((formError)=>({ ...formError, email: "*Must be type email" }));
+      } else {
+        setLoginFormError((formError)=>({...formError,email:''}));
+      }
+    }
+    
+    if (e.target.name == "password") 
+    {
+      setLoginData((loginData)=>({...loginData,[e.target.name]:e.target.value}))
+        if(!isOkPassword(e.target.value)) {
+          setLoginFormError((loginFormError)=>({
+            ...loginFormError,
+            password:
+              "Please Enter the valid password",
+          }));
+          console.log("are you here?");
+        } else {
+          setLoginFormError((loginFormError)=>({...loginFormError,password:''}));
+        }
+    }
+  }
+  const handleSignSubmit = async(e) => {
     e.preventDefault();
-    console.log('error hai kya',formError)
+    // console.log('error hai kya',formError)
     if(!Object.values(formError).every(value => !value)){
         console.log('Error hai bhai')
         console.log(formError)
@@ -203,9 +271,52 @@ const LoginDialog = () => {
         console.log(formData,'formdata hai bhai')
         return
     }
-    
-    console.log(formData,'hogaya bhai')
+    try{
+
+      const response = await axios.post('http://localhost:8000/signup',formData)
+      if(response.status ==200){
+        console.log('User created Successfully')
+        setInfoMessage({success:true,message:response.data})
+      }
+
+      // console.log(formData,'hogaya bhai')
+    }catch(error){
+      if(error.response && error.response.status == 400){
+        setInfoMessage({success:false,message:error.response.data})
+        console.log('Error',error.response.data)
+      }else{
+        console.log('tu mera dil hai')
+      }
+    }
   };
+
+  
+  const Login = async(e)=>{
+    e.preventDefault();
+    e.preventDefault();
+    // console.log('error hai kya',formError)
+    if(!Object.values(loginFormError).every(value => !value)){
+        console.log('Error hai bhai')
+        console.log(loginFormError)
+        return
+    }
+    if(Object.values(loginData).some(value => !value)){
+        console.log(loginData,'formdata hai bhai')
+        return
+    }
+    let response = await axios.post('http://localhost:8000/login',loginData)
+    try{
+
+      if(response.status === 200){
+        const responseData = JSON.parse(response.data)
+        await setUsername(username => responseData.data)
+        console.log('hi',username)
+      }
+    }catch(error){
+      console.log(error)
+    }
+    
+  }
   return (
     <Box>
       <Dialog
@@ -242,12 +353,28 @@ const LoginDialog = () => {
             <RightSide status={status}>
               <TextField
                 variant="standard"
+                onChange={e=>handleLoginValidation(e)}
                 label="Enter Email/Mobile number"
+                name="email"
                 style={{
                   marginBottom: "20px",
                   width: "100%",
                 }}
               />
+              {loginFormError.email && <Error>{loginFormError.email}</Error>}
+              <TextField
+                variant="standard"
+                onChange={e=>handleLoginValidation(e)}
+                label="Enter Password"
+                name="password"
+                type="password"
+                style={{
+                  marginBottom: "20px",
+                  width: "100%",
+                }}
+              />
+              {loginFormError.password && <Error>{loginFormError.password}</Error>}
+
               <Typography
                 style={{
                   fontSize: "12px",
@@ -259,7 +386,19 @@ const LoginDialog = () => {
                 By continuing, you agree to Flipkart's Terms of Use and Privacy
                 Policy.
               </Typography>
-              <OtpBtn variant="contained">Request OTP</OtpBtn>
+              <OtpBtn variant="contained" onClick={e=>{Login(e);if(username != 'empty'){handleClose()}}}>Login</OtpBtn>
+              <Typography style={
+                {
+                  marginBottom:10,
+                  marginTop:10,
+                  fontSize:20,
+                  fontWeight:500,
+                  textAlign:"center",
+                  color:"#212121"
+                }
+              }>OR</Typography>
+
+              <OtpBtn variant="contained" >Request OTP</OtpBtn>
               <CreateAccount onClick={handleSignUp}>
                 New to Flipkart? Create an account
               </CreateAccount>
@@ -347,10 +486,13 @@ const LoginDialog = () => {
                   marginBottom: "15px",
                 }}
               >
+              {infoMessage.success ? (<Success success = {true}>{infoMessage.message}</Success>):(<Success success = {false}>{infoMessage.message}</Success>)}
+
+
                 By continuing, you agree to Flipkart's Terms of Use and Privacy
                 Policy.
               </Typography>
-              <OtpBtn variant="contained" onClick={(e)=>handleSignSubmit(e)}>CONTINUE</OtpBtn>
+              <OtpBtn variant="contained" onClick={(e)=>{handleSignSubmit(e);}}>CONTINUE</OtpBtn>
               <ExistBtn
                 onClick={handleLogin}
                 style={{
@@ -364,6 +506,8 @@ const LoginDialog = () => {
           </DialogContent>
         )}
       </Dialog>
+      
+      
     </Box>
   );
 };

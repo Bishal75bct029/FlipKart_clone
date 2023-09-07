@@ -3,6 +3,7 @@ import { AppBar, Box,Button, InputBase, Toolbar, Typography, styled } from "@mui
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginBtn from "../features/login-signup/LoginBtn";
+import UsernameProvider from "../usecontext/UsernameProvider";
 
 const StyledHeader = styled(AppBar)`
     background-color: #2874f0;
@@ -97,8 +98,10 @@ const Navbar = () => {
                     <SearchIconWrapper>
                         <SearchIcon/>
                     </SearchIconWrapper>
-                </SearchBox>
-                <LoginBtn/>
+                </SearchBox>    
+                <UsernameProvider>
+                    <LoginBtn/>
+                </UsernameProvider>
                 </LeftBox>
                 <RightBox style = {{display:'flex',justifyContent:'space-between',alignItems:'center',width:'45%', marginRight:'10%'}}>
 
