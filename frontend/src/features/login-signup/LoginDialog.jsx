@@ -388,7 +388,7 @@ const LoginDialog = ({username,setUsername}) => {
               </Typography>
               <OtpBtn variant="contained" onClick={e=>{Login(e);if(username != 'empty'){handleClose()}}}>Login</OtpBtn>
               <Typography style={
-                {
+                { 
                   marginBottom:10,
                   marginTop:10,
                   fontSize:20,

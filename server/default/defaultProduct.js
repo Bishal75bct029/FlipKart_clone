@@ -6,6 +6,7 @@ const ProductSchema = require('../model/product')
 const insertData = async()=>{
     try{
         await database()
+        console.log('hello')
         await ProductSchema.insertMany(products)
         console.log('success')
     }catch(error){

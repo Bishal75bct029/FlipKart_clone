@@ -9,7 +9,7 @@ import getProducts from "../../redux/actions/getProducts";
 import { Slider, Typography } from "@mui/material";
 
 import Slide from "./components/Slide";
-
+  
 const Home = () => {
   const dispatch = useDispatch();
 

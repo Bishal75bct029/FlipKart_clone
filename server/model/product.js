@@ -29,19 +29,25 @@ const productSchema = mongoose.Schema({
     },
     discount: {
       type: String,
-      required: true,
+      default:"",
     },
   },
   quantity: Number,
   description: String,
   discount: {
     type: String,
-    required: true,
+    default:""
   },
   tagline: {
     type: String,
     required: true,
   },
+  createdBy:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'user',
+    default:'74fd68f942f0b356f53f157d',
+  },
+  
 });
 
 const ProductSchema = mongoose.model('product',productSchema)

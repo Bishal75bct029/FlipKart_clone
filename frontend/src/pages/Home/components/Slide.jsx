@@ -62,7 +62,7 @@ const Slide = ({ products,title }) => {
   `
   const Wrapper = styled(Box)`
     text-align: center;
-    transition: box-shadow 0.3s;
+    transition: box-shadow 0.3s;   
     &:hover{
       box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2); 
     }
@@ -86,7 +86,7 @@ const Slide = ({ products,title }) => {
           </Box>
           <ViewBtn variant="contained"> View All</ViewBtn>
               </Box>
-        </LeftPart>
+        </LeftPart>  
       
         <RightPart>
           <Carousel
