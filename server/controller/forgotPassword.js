@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const UserSchema = require("../model/user");
 const forgetPassword = async (request, response) => {
   const email = request.query.email;
+  console.log(email,'hole hole sajna')
   if (email) {
     try{
 
@@ -9,9 +10,9 @@ const forgetPassword = async (request, response) => {
         console.log(user, "User");
         if (user) {
             let token = jwt.sign({ email: email }, "forgetPassword", {
-                expiresIn: "10m",
+                expiresIn: "30m",
             });
-            let passResetLink = `http://localhost:8000/reset_password?token=${token}&email=${email}`;
+            let passResetLink = `http://localhost:5173/reset_password?token=${token}&email=${email}`;
             console.log(passResetLink);
             
             let nodemailer = require("nodemailer");
@@ -39,9 +40,9 @@ const forgetPassword = async (request, response) => {
                 }
             });
             
-            return response.status(200).json({ message: "Email sent" });
+            return response.status(200).json({ message: "Password reset link sent successfully. Please check you mail to reset the password link" });
         }
-        return response.status(400).json({ message: "No user exist" });
+        return response.status(400).json({ message: "No user exist. Please provide a valid mail" });
     }catch(error){
         return response.status(500).json({message:"Server Error"})
     }
@@ -52,7 +53,10 @@ const forgetPassword = async (request, response) => {
 const resetPassword = (request,response)=>{
     email = request.query.email;
     token = request.query.token;
+    console.log('hello gandu',token)
+    // console.log()
     if(email && token){
+        console.log("hello boys")
         jwt.verify(token,'forgetPassword',(error,success)=>{
             if(success){
                 return response.status(200).json({message:"nice one"})
@@ -62,14 +66,18 @@ const resetPassword = (request,response)=>{
             return response.status(404).json({message:"Invalid Link"})
         })
     }
-    return response.status(400).json({message:"No email or token provided"})
+    return response.status(400).json({message:"Invalid Link"})
 }
 
 const passwordChanged = async(request,response) =>{
     const email = request.body.email;
     const password = request.body.password;
     const token = request.body.token;
+    console.log(email,"  ",password,"  ",token)
     if(email && password && token){
+        if(String(password).length<8){
+            return response.status(404).json({message:"Error in changing password"})
+        }
         let updatedPassword = await UserSchema.findOneAndUpdate({email:email},{password:password},{new:true})
         return response.status(200).json({message:"Successfully updated",'updated':updatedPassword})
     }

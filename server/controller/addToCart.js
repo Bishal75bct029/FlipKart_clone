@@ -14,7 +14,7 @@ const AddToCart = async (request,response)=>{
         const orderData = {
           productID: request.params.id,
           createdBy: request.user._id,
-          quantity: data.quantity,
+          
           
         };
     
