@@ -10,12 +10,13 @@ const isAuth = (request, response, next) => {
     token = token.split(" ");
     token = token[1];
     console.log(token, "haha");
-  jwt.verify(token, "flipkartClone", (error, decodedToken) => {
+    jwt.verify(token, "flipkartClone", (error, decodedToken) => {
     if (error) {
       console.log("Token error", error);
       return response.status(404).json({"message":"invalid token"})
     }
-    request.user = {_id:decodedToken._id}
+    request.user = {_id:decodedToken._id,role:decodedToken.role,username:decodedToken.username}
+    
     console.log("Decoded Token:", decodedToken);
     next();
   });

@@ -23,7 +23,7 @@ const ProductListing = () => {
       <Box
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           height: "100%",
         }}
       >

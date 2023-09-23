@@ -2,7 +2,7 @@ import axios  from "axios";
 import { LOGIN_SUCCESS,LOGIN_FAILURE } from "../constants/userLogin";
 import { CLOSE } from "../constants/handleLoginDialog";
 
-export const login = (loginData) => async(dispatch)=>{
+export const login = (loginData,setLoginFormError) => async(dispatch)=>{
     try {
         console.log(loginData,'logindata aaena ra bishal don')
         let response = await axios.post("http://localhost:8000/login", loginData);
@@ -10,7 +10,7 @@ export const login = (loginData) => async(dispatch)=>{
         if (response.status === 200) {
           const responseData = JSON.parse(response.data);
           console.log(responseData,"response data hai mein")
-        //   handleClose()
+          
         dispatch({type:CLOSE})
           dispatch({type:LOGIN_SUCCESS,payload:responseData})
         //   console.log("hi", username); 
@@ -18,6 +18,7 @@ export const login = (loginData) => async(dispatch)=>{
       } catch (error) {
         console.log(error)
         dispatch({type:LOGIN_FAILURE,payload:error.response})
+        setLoginFormError(error.response.data)
       }
 
 }

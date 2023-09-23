@@ -1,4 +1,4 @@
-import { Box, TextField, Typography, styled } from "@mui/material";
+import { Box, Checkbox, TextField, Typography, styled } from "@mui/material";
 import { Children, createContext, useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -24,11 +24,12 @@ const DialogContent = styled(Box)`
 
   max-width: 1000px;
   min-height: 75vh;
+  overflow: auto;
 `;
 const LeftSide = styled(Box)`
   padding: 40px 33px;
   max-width: 40%;
-  height: 75vh;
+  height: auto;
 
   background: url(https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/login_img_c4a81e.png)
     center/222px 140px no-repeat;
@@ -47,7 +48,7 @@ const RightSide = styled(Box)`
     `}
   display: flex;
   flex-direction: column;
-  width:100%
+  width: 100%;
 `;
 
 const OtpBtn = styled(Button)`
@@ -115,7 +116,7 @@ const Success = styled(Box)`
 const LoginDialog = () => {
   const dispatch = useDispatch();
   const dialogStatus = useSelector((state) => state.handleLoginDialog);
-  const { open, handleClose } = useContext(DataContext);
+  // const { open, handleClose } = useContext(DataContext);
   const showDialogStatus = {
     login: {
       value: true,
@@ -141,24 +142,23 @@ const LoginDialog = () => {
     },
   };
   const [status, setStatus] = useState({ ...showDialogStatus });
-  const [frgotPwdData,setFrgotPwdData] = useState();
-  const [mailFormErr,setMailFormErr] = useState("");
-  const handleOnChange = (e) =>{
-    setFrgotPwdData(e.target.value)
-    if(!isValidEmail(e.target.value) && e.target.value !=""){
-      setMailFormErr("Must be type mail")
-
-    }else if(e.target.value === "" || isValidEmail(e.target.value)){
-      setMailFormErr("")
+  const [frgotPwdData, setFrgotPwdData] = useState();
+  const [mailFormErr, setMailFormErr] = useState("");
+  const handleOnChange = (e) => {
+    setFrgotPwdData(e.target.value);
+    if (!isValidEmail(e.target.value) && e.target.value != "") {
+      setMailFormErr("Must be type mail");
+    } else if (e.target.value === "" || isValidEmail(e.target.value)) {
+      setMailFormErr("");
     }
-  }
+  };
   const [formData, setFormData] = useState({
     phone: "",
     email: "",
     username: "",
     password: "",
+    seller: false,
   });
-  // console.log(status, "debug");
 
   const [formError, setFormError] = useState({
     phone: "",
@@ -171,7 +171,6 @@ const LoginDialog = () => {
     password: "",
   });
 
-  
   const [infoMessage, setInfoMessage] = useState({
     success: false,
     message: "",
@@ -181,30 +180,85 @@ const LoginDialog = () => {
     email: "",
     password: "",
   });
-  const [feedbckRstPwd,setFeedbckRstPwd] = useState({
-    info:'',
-    type:'',
+  const [feedbckRstPwd, setFeedbckRstPwd] = useState({
+    info: "",
+    type: "",
   });
-  const handlePwdSubmit = async()=>{
-    if(!mailFormErr){
-      try{
+  const handlePwdSubmit = async () => {
+    if (!mailFormErr) {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/forget_password?email=${frgotPwdData}`
+        );
 
-        const response = await axios.get(`http://localhost:8000/forget_password?email=${frgotPwdData}`)
-        
-        setFeedbckRstPwd({info:response.data.message,type:'success'})
-        console.log(response.data)
-      }catch(error){
-        console.log(error.response.data.message)
-        setFeedbckRstPwd({info:error.response.data.message,type:'fail'})
+        setFeedbckRstPwd({ info: response.data.message, type: "success" });
+      } catch (error) {
+        setFeedbckRstPwd({ info: error.response.data.message, type: "fail" });
       }
     }
-  }
+  };
+  const [checked, setChecked] = useState(false);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+    setFormData({ ...formData, seller: event.target.checked });
+  };
+
+  const handleClose = () => {
+    setStatus({
+      login: {
+        value: true,
+        data: {
+          top: "Login",
+          bottom: "Get access to your Orders, Wishlist and Recommendations",
+        },
+      },
+
+      signup: {
+        value: false,
+        data: {
+          top: `Looks like you're new here!`,
+          bottom: "Sign up with you mobile number to get started",
+        },
+      },
+      forgotPassword: {
+        value: false,
+        data: {
+          top: `Forgot Password? No Worry`,
+          bottom: ``,
+        },
+      },
+    });
+
+    setInfoMessage({
+      success: false,
+      message: "",
+    });
+
+    setFeedbckRstPwd({
+      info: "",
+      type: "",
+    });
+
+    setFormError({
+      phone: "",
+      email: "",
+      username: "",
+      password: "",
+    });
+
+    setLoginFormError({
+      email: "",
+      password: "",
+    });
+    dispatch({ type: CLOSE });
+  };
 
   return (
     <Box>
       <Dialog
         open={dialogStatus}
-        onClose={() => dispatch({ type: CLOSE })}
+        onClose={() => handleClose()}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         PaperProps={{ sx: { maxWidth: "unset" } }}
@@ -275,6 +329,11 @@ const LoginDialog = () => {
               {loginFormError.password && (
                 <Error>{loginFormError.password}</Error>
               )}
+              {
+                loginFormError.message && (
+                  <Error>{loginFormError.message}</Error>
+                )
+              }
 
               <Typography
                 style={{
@@ -290,7 +349,7 @@ const LoginDialog = () => {
               <OtpBtn
                 variant="contained"
                 onClick={() => {
-                  Login(loginFormError, loginData, dispatch);
+                  Login(loginFormError, loginData, dispatch,setLoginFormError);
                 }}
               >
                 Login
@@ -426,7 +485,17 @@ const LoginDialog = () => {
                 }}
               />
               {formError.password && <Error>{formError.password}</Error>}
-
+              <Box
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: 14,
+                  color: "#878787",
+                }}
+              >
+                <Checkbox checked={checked} onChange={handleChange} />{" "}
+                <Box variant="span">Become a Seller</Box>
+              </Box>
               <Typography
                 style={{
                   fontSize: "12px",
@@ -487,58 +556,56 @@ const LoginDialog = () => {
               </Box>
             </LeftSide>
             <RightSide status={status}>
-            {
-               feedbckRstPwd.type != 'success'&&
-              
-              <TextField
-              variant="standard"
-              value={frgotPwdData}
-              onChange={(e) =>
-                handleOnChange(e)
-              }
-              label="Enter Email/Mobile number"
-              name="email"
-              style={{
-                marginBottom: "20px",
-                width: "100%",
-              }}
-              /> 
-            }
-            
+              {feedbckRstPwd.type != "success" && (
+                <TextField
+                  variant="standard"
+                  value={frgotPwdData}
+                  onChange={(e) => handleOnChange(e)}
+                  label="Enter Email/Mobile number"
+                  name="email"
+                  style={{
+                    marginBottom: "20px",
+                    width: "100%",
+                  }}
+                />
+              )}
+
               {mailFormErr && <Error>{mailFormErr}</Error>}
-              
 
-              {!feedbckRstPwd &&
-              <Typography
-                style={{
-                  fontSize: "12px",
-                  color: "#878787",
+              {!feedbckRstPwd && (
+                <Typography
+                  style={{
+                    fontSize: "12px",
+                    color: "#878787",
 
-                  marginBottom: "15px",
-                }}
-              >
-                
-                Please Provide your registered email. A mail will be sent to
-                verify you.
+                    marginBottom: "15px",
+                  }}
+                >
+                  Please Provide your registered email. A mail will be sent to
+                  verify you.
                 </Typography>
-                }
-                { feedbckRstPwd.info && feedbckRstPwd.type === 'success' ?
+              )}
+              {feedbckRstPwd.info && feedbckRstPwd.type === "success" ? (
+                <Typography
+                  style={{
+                    fontSize: 14,
+                    backgroundColor: "#ccffcc",
+                    borderRadius: "2",
+                    padding: "4px",
+                    color: "green",
+                  }}
+                >
+                  {feedbckRstPwd.info}
+                </Typography>
+              ) : (
+                <Error style={{ fontSize: "14px" }}>{feedbckRstPwd.info}</Error>
+              )}
 
-                (<Typography style ={{fontSize:14,backgroundColor:'#ccffcc',borderRadius:'2',padding:'4px', color:'green'}}>{feedbckRstPwd.info}</Typography>):
-                (<Error style ={{fontSize:'14px'}}>{feedbckRstPwd.info}</Error>)
-
-                }
-                {console.log(feedbckRstPwd,'hya')}
-                {
-                   feedbckRstPwd.type != 'success' &&
-                  ( <OtpBtn
-                    variant="contained"
-                    onClick={handlePwdSubmit
-                    }
-                    >
-                    Continue
-                    </OtpBtn>)
-                  }
+              {feedbckRstPwd.type != "success" && (
+                <OtpBtn variant="contained" onClick={handlePwdSubmit}>
+                  Continue
+                </OtpBtn>
+              )}
             </RightSide>
           </DialogContent>
         )}

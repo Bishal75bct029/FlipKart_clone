@@ -9,13 +9,16 @@ export const handleSignSubmit = async (formData,formError,setInfoMessage) => {
   
     
     // console.log('error hai kya',formError)
+    console.log(formError,'i am error')
     if (!Object.values(formError).every((value) => !value)) {
       console.log("Error hai bhai");
       
       return;
     }
-    if (Object.values(formData).some((value) => !value)) {
+    let skipSeller = {...formData,seller:true}
+    if (Object.values(skipSeller).some((value) =>  !value)) {
       console.log(formData, "formdata hai bhai");
+      
       return;
     }
     try {
@@ -39,17 +42,22 @@ export const handleSignSubmit = async (formData,formError,setInfoMessage) => {
     }
   };
 
-  export const Login = async (loginFormError,loginData,dispatch) => {
-    
-    if (!Object.values(loginFormError).every((value) => !value)) {
-      console.log("Error hai bhai");
-      console.log(loginFormError);
-      return;
+  export const Login = async (loginFormError,loginData,dispatch,setLoginFormError) => {
+    try{
+
+      
+      if (!Object.values(loginFormError).every((value) => !value)) {
+        console.log("Error hai bhai");
+        console.log(loginFormError);
+        return;
+      }
+      if (Object.values(loginData).some((value) => !value)) {
+        console.log(loginData, "formdata hai bhai login ka");
+        return;
+      }
+      console.log(loginData,"Ma login Data hu hai ")
+      dispatch(login(loginData,setLoginFormError))
+    }catch(error){
+      console.log("kanxi ")
     }
-    if (Object.values(loginData).some((value) => !value)) {
-      console.log(loginData, "formdata hai bhai login ka");
-      return;
-    }
-    console.log(loginData,"Ma login Data hu hai ")
-    dispatch(login(loginData))
   };

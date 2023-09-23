@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import {styled} from "@mui/material";
 import { Box, InputBase, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
@@ -9,18 +9,26 @@ import { Link } from "react-router-dom";
 import { SEARCH_SUCCESS } from "../../../redux/constants/searchResults";
 import { FILTER_SUCCESS } from "../../../redux/constants/filterValue";
 
-const SearchBox = styled(Box)`
-  background-color: white;
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding: 0 0px 0 16px;
-  width: 444px;
-  height: 36px;
-  border-radius: 2px;
-  margin-right: 20px;
-  margin-left: 10px;
-`;
+const SearchBox = styled(Box)(({theme})=>({
+
+  backgroundColor: 'white',
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '0 0px 0 16px',
+  width: '444px',
+  height: '36px',
+  borderRadius: '2px',
+  marginRight: '20px',
+  marginLeft: '10px',
+  [theme.breakpoints.down('lg')]:{
+    width:400
+  },
+  [theme.breakpoints.down('md')]:{
+    width:330
+  }
+  
+}));
 
 const SearchIconWrapper = styled("span")`
   color: #2874f0;
@@ -33,7 +41,7 @@ const SearchIconWrapper = styled("span")`
 const SearchBoxs = () => {
   const dispatch = useDispatch();
   const filterValue = useSelector(state=>state.filterValue)
-  let newFilterValue = [...filterValue];
+  // let newFilterValue = [...filterValue];
   const [searchValue, setSearchValue] = useState();
   const [suggestion, setSuggestion] = useState([]);
   const setSearch = (event) => {
@@ -65,7 +73,7 @@ const SearchBoxs = () => {
   const handleSearch =(searchValue) =>{
     if(searchValue){
       console.log("hello handle",searchValue)
-      dispatch({type:FILTER_SUCCESS,payload:[0,0]})
+      dispatch({type:FILTER_SUCCESS,payload:{minValue:0,maxValue:10001}})
        dispatch(SearchProduct(`http://localhost:8000/search?search=${searchValue}`));
        setSearchValue('')
     }

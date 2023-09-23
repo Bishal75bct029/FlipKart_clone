@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { OPEN } from "../../../../redux/constants/handleLoginDialog";
 
 const ImageSection = styled(Box)`
-  width: 480px;
+  width: 500px;
 
   height: auto;
   /* max-width: 300px; */
@@ -105,9 +105,12 @@ const ViewProduct = () => {
         style={{
           display: "flex",
           marginTop: 70,
+          // marginRight:100,
+          paddingRight:25,
           justifyContent: "space-between",
-          maxWidth: "100%",
+          width: "100%",
           flexWrap: "",
+          // margin:'70px 100px 0px 0px'
         }}
       >
         <Box
@@ -115,15 +118,16 @@ const ViewProduct = () => {
             display: "flex",
             flexDirection: "column",
             marginLeft: 20,
+            marginRight:10,
             alignItems: "center",
             width: 500,
-            height: '90vh',
+            maxHeight: '90vh',
             // justifyContent: "space-around",
             
           }}
         >
           <ImageSection>
-            {product && <img src={product.detailUrl} alt=""style = {{marginTop:'8px'}}/>}
+            {product && <img src={product.image} alt=""style = {{marginTop:'8px',height:'400px',width:'auto',maxWidth:'490px'}}/>}
           </ImageSection>
           <Box style={{ display: "flex",paddingBottom:'70px' }}>
             <Btn onClick={addToCart}>
@@ -136,7 +140,7 @@ const ViewProduct = () => {
             </Btn>
           </Box>
         </Box>
-        <Box style={{ maxWidth: "60%", height: 440, marginLeft: 20 }}>
+        <Box style={{  height: 440, marginLeft: 20 }}>
           <Typography style={{ fontSize: 18, color: "#212121" }}>
             {product && product.title.longTitle}
           </Typography>
@@ -176,12 +180,12 @@ const ViewProduct = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              width: 225,
+              width: 325,
               margin: "15px 0",
             }}
           >
             <Box
-              component="span"
+              // component="span"
               style={{
                 fontSize: 24,
                 lineHeight: 1.4,
@@ -192,17 +196,17 @@ const ViewProduct = () => {
               ₹{product && product.price.cost}
             </Box>
             <Box
-              component="span"
+              // component="span"
               style={{
                 color: "#878787",
                 fontSize: 16,
                 textDecorationLine: "line-through",
               }}
             >
-              ₹{product && product.price.mrp}
+              ₹ {product && product.price.mrp}
             </Box>
             <Box
-              component="span"
+              // component="span"
               style={{
                 color: "#388e3c",
                 fontWeight: 500,

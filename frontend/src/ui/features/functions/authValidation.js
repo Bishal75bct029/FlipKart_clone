@@ -98,6 +98,9 @@ export const handleSignUp = (e,showDialogStatus,setStatus) => {
         setFormError((formError) => ({ ...formError, password: "" }));
       }
     }
+    if(e.target.checked){
+      setFormData({...formData,seller:true})
+    }
     console.log(formError, "k xa");
   };
 

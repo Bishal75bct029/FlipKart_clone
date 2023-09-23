@@ -8,7 +8,7 @@ const Img = styled('img')`
     border-radius: 2px;
 `
 
-const ProductCard = ({url,mrp,cost}) => {
+const ProductCard = ({url,mrp,cost,tagline}) => {
   return (
     <Box
           style={{
@@ -19,11 +19,11 @@ const ProductCard = ({url,mrp,cost}) => {
             paddingLeft:'10px',
             height: "440px",
             borderRadius: "2px",
-            margin:'10px 8px',
+            margin:'10px 20px 20px 0',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
           }}
         >
-            <Box style ={{height:'280px'}}>
+            <Box style ={{height:'275px'}}>
 
           <Img
             src={url}
@@ -33,9 +33,12 @@ const ProductCard = ({url,mrp,cost}) => {
             </Box>
           <Typography style={{fontSize:12,color:'#BDBDBD',margin:'10px 0 0 0'}}>Sponsored</Typography>
           <Typography style ={{fontSize:14,color:'#878787',margin:'0px 0 0 0'}}>QROMOS</Typography>
-          <Typography style ={{fontSize:14,color:'#212121',margin:'2px 0 0 0'}}>Pack Of 5 Women Printed Crepe-line Kurta</Typography>
+          <Typography style ={{fontSize:14,color:'#212121',margin:'2px 0 0 0' ,display: '-webkit-box',      
+    WebkitLineClamp: 1,         
+    WebkitBoxOrient: 'vertical', 
+    whiteSpace: 'normal',  paddingTop:1,textOverflow:'ellipsis',overflow:'hidden'}}>{tagline}</Typography>
           <Typography style ={{fontSize:12,color:'#878787',margin:'5px 0'}}>Mulitcolor</Typography>
-          <Box style ={{display:'flex',justifyContent:'space-between',width:'50%',margin:'0px 0 5px 0'}}>
+          <Box style ={{display:'flex',justifyContent:'space-between',width:'60%',margin:'0px 0 5px 0'}}>
             <Typography style ={{fontSize:16,color:'#212121',fontWeight:500}}>{cost}</Typography>
             <Typography style ={{fontSize:14,color:'#878787',textDecoration:'line-through'}}>{mrp}</Typography>
             <Typography style ={{fontSize:13,color:'#388E3C'}}>30% off</Typography>

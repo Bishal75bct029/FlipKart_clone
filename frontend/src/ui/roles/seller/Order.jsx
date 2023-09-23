@@ -9,9 +9,11 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const Order = () => {
+const Order = ({setSelected}) => {
+  useEffect(()=>setSelected('Order'),[])
+
   function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
   }

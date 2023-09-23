@@ -25,23 +25,36 @@ const SortProducts = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.searchResults);
   const copyProducts = [...products];
+  const filters = useSelector(state=>state.filterValue);
   function getRandomSortOrder() {
     // This function returns a random number between -1, 0, and 1
     return Math.random() - 0.5;
   }
+  
+  console.log(filters,'chomu')
   const handleSort = (type) => {
-    
-      const apiUrl = `http://localhost:8000/sortProducts?sort=${type}&search=${searchParam}`
-      console.log(apiUrl)
-      dispatch(SearchProduct(apiUrl))
-    
-    console.log(products, "hahahahahahahahaha");
-    // products.push({price:{cost:10}})
-    console.log(products);
 
-    // dispatch({ type: "sort_result", payload: copyProducts });
-    // setTest(products);
-    // setTest(test=>!test);
+      let apiUrl
+      if(filters.minValue != 0 || filters.maxValue != 10001){
+        console.log("k xa")
+
+         apiUrl = `http://localhost:8000/sortProducts?sort=${type}&search=${searchParam}&minPrice=${filters.minValue}&maxPrice=${filters.maxValue}`
+         console.log(apiUrl,'k vayo yr')
+      }else{
+
+        apiUrl = `http://localhost:8000/sortProducts?sort=${type}&search=${searchParam}`
+      }
+      
+        console.log(apiUrl,'honi')
+        dispatch(SearchProduct(apiUrl))
+        
+        console.log(products, "hahahahahahahahaha");
+        // products.push({price:{cost:10}})
+        console.log(products);
+        
+        // dispatch({ type: "sort_result", payload: copyProducts });
+        // setTest(products);
+        // setTest(test=>!test);
   };
   return (
     <Box
@@ -88,13 +101,13 @@ const SortProducts = () => {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
           >
-            <MenuItem value={1} onClick={() => handleSort('asc')}>
+            <MenuItem value={1} onClick={() => {handleSort('best');etValue(1)}}>
               Best Match
             </MenuItem>
-            <MenuItem value={2} onClick={() => handleSort('asc')}>
+            <MenuItem value={2} onClick={() => {handleSort('asc');setValue(2)}}>
               Price Low to High
             </MenuItem>
-            <MenuItem value={3} onClick={() => handleSort('desc')}>
+            <MenuItem value={3} onClick={() => {handleSort('desc'),setValue(3)}}>
               Price High to Low
             </MenuItem>
           </Select>

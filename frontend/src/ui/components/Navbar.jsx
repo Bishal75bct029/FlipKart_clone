@@ -4,6 +4,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginBtn from "../features/login-signup/LoginBtn";
 import UsernameProvider from "../../usecontext/UsernameProvider";
 import SearchBoxs from "../features/search/SearchBoxs";
+import { useTheme } from "@emotion/react";
+import Seller from "../features/login-signup/Seller";
+import { Link } from "react-router-dom";
 
 const StyledHeader = styled(AppBar)`
     background-color: #2874f0;
@@ -38,32 +41,52 @@ const MainBox = styled(Box)`
     justify-content: space-between;
     width: 100%;
     align-items: center;
-    margin-left: 13%;
-
-`
-
-const LeftBox = styled(Box)`
-    display: flex;
-    align-items: center;
-    width: 100%;
-`
-const RightBox = styled(Box)`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 45%;
-    margin-right: 10%;
+    
     `
+
+const LeftBox = styled(Box)(({theme})=>({
+
+    display: 'flex',
+    alignItems: 'center',
+    /* width: 50%; */
+    justifyContent: 'space-between',
+    marginLeft: '10%',
+    [theme.breakpoints.down('lg')]:{
+        marginLeft:'2%',
+    },
+    [theme.breakpoints.down('md')]:{
+        marginLeft:'2%'
+    }
+}));
+
+const RightBox = styled(Box)(({theme})=>({
+
+
+    display: 'flex',
+    alignItems: 'center',
+    /* justify-content: space-between; */
+    width: '40%',
+    minWidth:300,
+    marginRight: '10%',
+    [theme.breakpoints.down('lg')]:{
+        marginRight:0
+    }
+
+}))
+    
 const Navbar = () => {
+    const theme = useTheme();
   return (
-    <div>
+    <div theme = {theme}>
       <StyledHeader>
         <Toolbar style={{minHeight:'56px'}}>
             <MainBox >
                 <LeftBox>
 
+                <Link to ="/" style={{textDecoration:'none',color:'inherit'}}> 
 
-                <Box style = {{}}>
+
+                <Box style = {{cursor:'pointer'}}>
                     <img src="http://localhost:5173/static/images/flipkartlogo.png" style={{height:20}} alt="logo" />
                     <LogoText>
                         Explore 
@@ -71,16 +94,21 @@ const Navbar = () => {
                         <PlusLogo src="http://localhost:5173/static/images/plus.png" alt="plus" />
                     </LogoText>
                 </Box>
+                </Link>
                 <SearchBoxs/>
-                <UsernameProvider>
-                    <LoginBtn/>
-                </UsernameProvider>
+                
+                
                 </LeftBox>
-                <RightBox style = {{display:'flex',justifyContent:'space-between',alignItems:'center',width:'45%', marginRight:'10%'}}>
+                <RightBox style = {{display:'flex',justifyContent:'space-between',alignItems:'center',width:'45%'}}>
 
 
-                <Box variant = 'span' style={{width:'116px',fontWeight:'500'}}>Become a Seller</Box>
-                <Typography>More</Typography>
+                    <Typography style={{marginRight:''}}>
+
+                    <LoginBtn/>
+                    </Typography>
+                <Box variant = 'span' style={{width:'116px',fontWeight:'500',margin:'0 0px 0 0px',}}><Link to ="profile/seller">Become a Seller</Link></Box>
+                {/* <Seller/> */}
+                <Box variant = 'span' style={{marginRight:''}}>More</Box>
                 <CartWrapper>
                     
                     <ShoppingCartIcon/>

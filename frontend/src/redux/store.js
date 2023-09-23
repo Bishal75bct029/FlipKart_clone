@@ -6,6 +6,7 @@ import { loginCredentials } from './reducers/loginCredentials';
 import { handleLoginDialog } from './reducers/handleLoginDialog';
 import { searchResults } from './reducers/searchResults';
 import { filterValue } from './reducers/filterValue';
+import {users} from './reducers/users';
 
 
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     handleLoginDialog,
     searchResults,
     filterValue,
+    users,
 });
 
 const store = createStore(

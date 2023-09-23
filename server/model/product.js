@@ -6,8 +6,10 @@ const productSchema = mongoose.Schema({
     unique:true,
     
   },
-  url: String,
-  detailUrl: String,
+  image:{
+    type:String,
+    required:true,
+  },
   title: {
     shortTitle: {
       type: String,
@@ -41,6 +43,13 @@ const productSchema = mongoose.Schema({
   tagline: {
     type: String,
     required: true,
+  },
+  category:{
+    type:String,
+    enum:['mobile','clothing','appliances','travel','beauty','gifts','fashion','electronics','grocery','home'],
+    required:true,
+
+
   },
   createdBy:{
     type:mongoose.Schema.Types.ObjectId,

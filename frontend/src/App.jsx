@@ -11,6 +11,8 @@ import Seller from "./ui/roles/seller/Seller";
 // import { CartesianContext } from "@mui/x-charts/context/CartesianContextProvider";
 import Cart from "./ui/pages/order/Cart";
 import PasswordReset from "./PasswordReset";
+import Admin from "./ui/roles/admin/Admin";
+import VerifyUser from "./ui/components/VerifyUser";
 
 function App() {
   return (
@@ -22,8 +24,10 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/getProduct/:id" element={<ViewProduct />} />
             <Route path="/products/*" element={<ProductListing />} />
-            <Route path="/profile/seller" element={<Seller />} />
+            <Route path="/profile/seller//*" element={<Seller />} />
+            <Route path="/profile/admin//*" element={<Admin />} />
             <Route path="/order" element={<Cart />} />
+            <Route path = "/signup" element = {<VerifyUser/>}/>
             <Route path="/reset_password" element ={<PasswordReset/>}/>
           </Routes>
         </BrowserRouter>

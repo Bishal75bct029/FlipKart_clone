@@ -26,6 +26,11 @@ const userSchema = mongoose.Schema({
     enum:['seller',"buyer"],
     default:'buyer'
   },
+  status:{
+    type:String,
+    enum:['verified','unverified'],
+    default:'unverified'
+  }
 });
 
 const UserSchema = mongoose.model('user',userSchema)
