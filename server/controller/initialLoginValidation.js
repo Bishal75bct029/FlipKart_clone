@@ -23,7 +23,7 @@ const validateLogin = async(request,response) =>{
 });
 
     }else{
-        return response.status(400).send.json({message:[]})
+        return response.status(400).json({message:'haha'})
     }
 }
 

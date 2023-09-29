@@ -19,7 +19,7 @@ const postProduct = async (request, response) => {
     console.log(request.body,"Iambody")
     // const userId = request.user._id;
     // response.status(200).json({ message: productData });
-    console.log(request.files.file.name,'yes')
+    // console.log(request.files.file.name,'yes')
     if(!request.files){
       console.log("Where is the file?");
       return response.status(400).json({message:"No Image  uploaded"});

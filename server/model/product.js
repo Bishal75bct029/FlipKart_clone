@@ -59,5 +59,16 @@ const productSchema = mongoose.Schema({
   
 });
 
+productSchema.pre("remove", async function (next) {
+  try {
+    // Remove all orders that have this product's ID as their productID
+    console.log("janam")
+    await OrderSchema.deleteMany({ productID: this._id });
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 const ProductSchema = mongoose.model('product',productSchema)
  module.exports =  ProductSchema

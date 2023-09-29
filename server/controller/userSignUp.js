@@ -2,22 +2,19 @@ const UserSchema = require("../model/user");
 const Joi = require("joi");
 const jwt = require('jsonwebtoken');
 const sendMail = require("../functions/sendMail");
+const bcrypt = require('bcrypt');
 
 const createUser = async (request, response) => {
   if(!request.query.email && !request.query.token && Object.keys(request.body).length > 0)
   {
 
     console.log(" are you here")
-    const user = request.body;
+    const user = {email:request.body.email,username:request.body.email}
   console.log('user',user)
   const signUpSchema = Joi.object({
     username: Joi.string().min(4).required(),
     email: Joi.string().email().required(),
-    password: Joi.string()
-    .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-      .required()
-      .min(8),
-      phone: Joi.string().max(3),
+   
   });
   const { error, value } = signUpSchema.validate(user);
   console.log("I am value",value)
@@ -25,6 +22,7 @@ const createUser = async (request, response) => {
 
   if (error) {
     console.error("Validation error:", error.details);
+    return response.status(400).json({message:"error"});
   } else {
     console.log("Valid user data:", value);
   }
@@ -34,11 +32,11 @@ const createUser = async (request, response) => {
   // userExist = userExist.toObject()
   if (userExist) {
     if(userExist.status === 'unverified'){
-      return response.status(200).send('You are already registered. Please verify your mail.')
+      return response.status(400).send('You are already registered. Please verify your mail.')
     }
-    response.status(400).send("Username or email already exist");
+    return response.status(400).send("Username or email already exist");
     console.log("Already there bb", userExist);
-    return;
+    // return;
   }
   let signUpData;
   console.log(request.body.seller)
@@ -49,25 +47,37 @@ const createUser = async (request, response) => {
   }else{
     signUpData = {...request.body, role:'buyer'}
   }
+
+  bcrypt.hash(request.body.password,10,async(error,hash)=>{
+    if(hash){
+      signUpData = {...signUpData, password:hash}
+      console.log(signUpData,'lalalala')
+      try{
+
+        const saveUser = await new UserSchema(signUpData);
+        const done = await saveUser.save();
+      }catch(error){
+        console.log("Something went wrong");
+        console.log("done", "haha");
+        if (done) {
+          console.log("User sign up successfully");
+        } 
+      }
+    }else{
+      return response.status(500).json({message:"Server error",error});
+    }
+  })
+  
   console.log("Sign Up data",signUpData);
-  const saveUser = new UserSchema(signUpData);
   let token = jwt.sign({ email: signUpData.email }, "signup", {
     expiresIn: "10y",
 });
 let verifyLink = `http://localhost:5173/signup?token=${token}&email=${signUpData.email}`;
 sendMail(verifyLink,"Verify your mail",signUpData.email)
+return response.status(200).send("Email has been sent successfully. Verify your mail");
 
 
   console.log("haha");
-  const done = await saveUser.save();
-  console.log("done", "haha");
-  if (done) {
-    console.log("User sign up successfully");
-    response.status(200).send("Email has been sent successfully. Verify your mail");
-  } else {
-    response.status(500).send("Server Error");
-  }
-  
   console.log(request.body,"gandulaal");
 }else{
   console.log(request.query.token,'xa ra',request.query.email,'email pani')
@@ -97,15 +107,18 @@ const getUsers = async(request,response)=>{
 
 const deleteUsers = async(request,response)=>{
   try{
-    if(request.user.role === 'seller' || request.user.role === 'buyer'){
+    if(request.user.role === 'admin'){
 
-      console.log("I love you")
-      const deleteUser = await UserSchema.findByIdAndRemove(request.params.id);
+      const deleteUser = await UserSchema.findByIdAndDelete(request.params.id);
+      // const userToDelete = await UserSchema.findById(request.params.id)
+      console.log(userToDelete,'love me')
+      // console.log(userToDelete.remove(),'k xa ra ho yesma');
+      // await UserSchema.remove({_id:request.params.id});
       return response.status(200).json({message:"success"});
     }
     return response.status(403).json({message:"not allowed"})
     }catch(error){
-      return response.status(400).json({message:"fail to delete user"});
+      return response.status(500).json({message:"fail to delete user",error:error});
     }
 }
 

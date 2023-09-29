@@ -3,6 +3,8 @@ const ProductSchema = require("../model/product")
 const fs = require("fs")
 const path = require('path')
 const getImageExtension = require("../functions/getImageExtension")
+const { OrderSchema } = require("../model/order")
+const mongoose = require('mongoose');
 
 const fetchProduct = async(request, response)=>{
     try{
@@ -43,28 +45,34 @@ const deleteProducts = async(request,response)=>{
         console.log(request.user.role,'role')
         if(request.user.role === 'seller' || request.user.role === 'admin'){
             
-            const id = request.params.id;
+            let id = request.params.id;
             console.log(id)
             const product = await ProductSchema.findOne({_id:id});
             // product
             const deleted = await ProductSchema.findByIdAndRemove(id);
-            if(deleted){
+            
+                // id = new mongoose.Types.ObjectId(id);
+                
+                    const deleteOrder = await OrderSchema.deleteMany({productID:id});
+                    console.log(deleteOrder);
+                    // return response.status(200).json({message:"Deleted orders also succesfully"});
+                
                 console.log("deleted")
                 try {
                     const deletingImage =path.join(__dirname,'../', product.image.split('/').slice(3).join('/'));
-                    fs.unlinkSync(deletingImage); // Delete the image file from the server
+                    fs.unlinkSync(deletingImage); 
                     console.log('Image deleted successfully:', deletingImage);
                   } catch (error) {
                     console.error('Error deleting image:', error);
                   }
-            }
+            
             console.log("hello")
             return response.status(200).json({message:"product deleted successfully"});
         }
         console.log("WHY")
             return response.status(403).json({message:"not allowed"})
     }catch(error){
-        console.log("Error in deleting product")
+        console.log("Error in deleting product",error)
         return response.status(400).json({message:"couldnot delete products"});
     }
 }
@@ -77,7 +85,7 @@ const fetchProductBySeller = async(request,response)=>{
     }
     try{
         console.log()
-        const products = await ProductSchema.find({createdBy:request.user._id})
+        const products = await ProductSchema.find({createdBy: new mongoose.Types.ObjectId(request.user._id)})
         console.log(products,"love")
         return response.status(200).json({message:products})
     }catch(error){
@@ -94,6 +102,7 @@ const updateProduct = async (request,response)=>{
             if(Object.values(request.body).length <11){
                 return response.status(400).json({message:"All fields are required"})
             }
+            console.log(request.body,'motu aur patlu')
             if(request.files){
                 console.log("gandu")
                 const extension = getImageExtension(request.files.file.name)
