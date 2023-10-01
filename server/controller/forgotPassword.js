@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const UserSchema = require("../model/user");
 const sendMail = require("../functions/sendMail");
+const bcrypt = require('bcrypt');
+
 const forgetPassword = async (request, response) => {
   const email = request.query.email;
   console.log(email,'hole hole sajna')
@@ -48,18 +50,35 @@ const resetPassword = (request,response)=>{
 }
 
 const passwordChanged = async(request,response) =>{
-    const email = request.body.email;
-    const password = request.body.password;
-    const token = request.body.token;
-    console.log(email,"  ",password,"  ",token)
-    if(email && password && token){
-        if(String(password).length<8){
-            return response.status(404).json({message:"Error in changing password"})
+    try{
+
+        const email = request.body.email;
+        const password = request.body.password;
+        const token = request.body.token;
+        console.log(email,"  ",password,"  ",token)
+        if(email && password && token){
+            if(String(password).length<8){
+                return response.status(404).json({message:"Error in changing password"})
+            }
+            try{
+
+                bcrypt.hash(password, 10, async function(err, hash) {
+                    if(hash){
+                        
+                        await UserSchema.findOneAndUpdate({email:email},{password:hash},{new:true})
+                        return response.status(200).json({message:"Successfully updated"})
+                    }else{
+                        return response.status(500).json({messagae:"Unable to hash the password"})
+                    }
+                });
+            }catch(error){
+                return response.status(500).json({message:"Server error"});
+            }
         }
-        let updatedPassword = await UserSchema.findOneAndUpdate({email:email},{password:password},{new:true})
-        return response.status(200).json({message:"Successfully updated",'updated':updatedPassword})
     }
-    return response.status(404).json("Sorry unable to change")
+    catch(error){
+        return response.status(404).json("Sorry unable to change")
+    }
     
 }
 module.exports = {forgetPassword,resetPassword,passwordChanged};

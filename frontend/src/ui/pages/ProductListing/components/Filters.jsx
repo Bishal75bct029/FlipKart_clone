@@ -23,7 +23,7 @@ import { useEffect } from "react";
 // import Button from '@mui/material/Button';
 
 const CustomSlider = styled(Slider)`
-  width: 236px;
+  width: 90%;
   height: 6px;
   /* color: '#2874f0'; */
   .MuiSlider-thumb {
@@ -61,13 +61,39 @@ const Btn = styled(Button)`
 
 const Filters = () => {
   const dispatch = useDispatch();
+  const [maximumPrice,setmaximumPrice] = useState(99999999)
+  const [count,setCount] = useState(0);
   const products = useSelector((state) => state.searchResults);
   const filterValue = useSelector((state) => state.filterValue);
   let newFilterValue;
   const [sliderValue, setSliderValue] = useState([0, filterValue.maxPrice]);
   console.log("slidervalue", sliderValue);
   const location = useLocation();
+  const queryParams = queryString.parse(location.search);
+  const query = queryParams.search;
+  const [searchQuery,setSearchQuery] = useState(query);
+  
+  let value;
+  if(searchQuery !== query){
+    setCount(0);
+    setSearchQuery(query)
+    value = 1;
+  }
+  useEffect(()=>{
 
+    if(products.search_results.length > 0 && count ===0 || value ===1){
+      console.log('aaeu ki naai')
+      const newProducts = products.search_results;
+      const max = newProducts.reduce((max, product) => {
+        return Math.max(max, product.price.mrp);
+      }, -Infinity);
+      setmaximumPrice(max);
+      
+      console.log(maximumPrice,'maxprice hu mein')
+      setSliderValue([sliderValue[0], max]);
+      setCount(1)
+    }
+  },[products,query,count,filterValue.maxPrice, maximumPrice, sliderValue])
   const handleChange = (event, newValue) => {
     setSliderValue(newValue);
     console.log(newFilterValue, "love u");
@@ -77,24 +103,26 @@ const Filters = () => {
     });
     console.log(filterValue);
   };
-
+console.log(maximumPrice,'kyakyahota hai')
   useEffect(() => {
     const initialMinPrice = 0;
-    const initialMaxPrice = 10001;
+    // const initialMaxPrice = maxPrice;
+    // console.log(maxPrice,'k vayoyri')
 
     // setMinPrice(initialMinPrice);
     // setMaxPrice(initialMaxPrice);
 
     // Optionally, reset priceRange to default as well
-    setSliderValue([initialMinPrice, initialMaxPrice]);
-  }, [filterValue.maxPrice, filterValue.minPrice]);
+    // setSliderValue([initialMinPrice, maxPrice]);
+  }, [filterValue.maxValue, filterValue.minValue]);
 
   // newFilterValue = [...sliderValue];
   const handleFilter = () => {
-    let minPrice, maxPrice;
-    if (sliderValue[0] > 0 || sliderValue[1] < 10001) {
-      minPrice = sliderValue[0];
-      maxPrice = sliderValue[1];
+    let minPrice;
+    if (sliderValue[0] > 0 || sliderValue[1] < (maximumPrice - 1)) {
+      console.log("hello boy")
+      const minPrice = sliderValue[0];
+      const maxPrice = sliderValue[1];
       const queryParams = queryString.parse(location.search);
       const searchParam = queryParams.search;
       console.log("min price", minPrice, "and", "maxprice");
@@ -107,13 +135,11 @@ const Filters = () => {
       );
     }
   };
-  const maxPrice = products.reduce((max, product) => {
-    return Math.max(max, product.price.mrp);
-  }, -Infinity);
-  console.log(maxPrice,'maxprice')
+
+  // console.log(maxPrice,'maxprice')
   return (
     <Box
-      style={{ width: "270px", backgroundColor: "white", padding: "15px 20px" }}
+      style={{ width: '100%', backgroundColor: "white", padding: "15px 20px" }}
     >
       <Typography
         style={{
@@ -196,13 +222,14 @@ const Filters = () => {
           backgroundColor: "#E0E0E0",
           width: 236,
           marginBottom: "-16px",
+          width:'90%'
         }}
       ></Box>
       <CustomSlider
         // defaultValue={0}
         value={[sliderValue[0], sliderValue[1]]}
         onChange={handleChange}
-        max={maxPrice}
+        max={maximumPrice}
       />
       <Box style={{ display: "flex", justifyContent: "center" }}>
         <FilterPrice
@@ -233,7 +260,7 @@ const Filters = () => {
             InputProps={{
               style: { fontSize: "14px", padding: "0px", marginRight: "0px" },
             }}
-            value={sliderValue[1] == 10001 ? "" : sliderValue[1]}
+            value={sliderValue[1] == 99999999 ? "" : sliderValue[1]}
           />
           <Btn style={{display:'flex',position:'relative'}}>
             <Box onClick={handleFilter} style={{position:'absolute',top:3}}>

@@ -22,21 +22,32 @@ const SearchBox = styled(Box)(({theme})=>({
   marginRight: '20px',
   marginLeft: '10px',
   [theme.breakpoints.down('lg')]:{
-    width:400
+    width:380
   },
   [theme.breakpoints.down('md')]:{
-    width:330
-  }
+    width:300
+  },
+  [theme.breakpoints.down('sm')]:{
+    width:220,
+    padding:7
+  },
+  
   
 }));
 
-const SearchIconWrapper = styled("span")`
-  color: #2874f0;
-  font-weight: bolder;
-  padding-top: 2px;
-  padding-right: 6px;
-  font-size: 20px;
-`;
+const SearchIconWrapper = styled("span")(({theme})=>({
+
+  color: '#2874f0',
+  fontWeight: 'bolder',
+  paddingTop: 2,
+  paddingRight: 6,
+  fontSize: 20,
+  [theme.breakpoints.down('sm')]:{
+    width:220,
+    paddingRight:0
+  },
+}))
+
 
 const SearchBoxs = () => {
   const dispatch = useDispatch();

@@ -5,6 +5,8 @@ import { UsernameProvide } from "../../../usecontext/UsernameProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { OPEN } from "../../../redux/constants/handleLoginDialog";
 import { LOGIN_FAILURE } from "../../../redux/constants/userLogin";
+import { Link } from "react-router-dom";
+import { LOGIN_FAILURE_TOASTIFY, LOGOUT_SUCCESS_TOASTIFY } from "../../../redux/constants/authToast";
 
 const Btn = styled(Button)(({theme})=>({
 
@@ -61,7 +63,7 @@ const LoginBtn = () => {
   // console.log(username,'liera aaye')
   // const username = useContext(UsernameProvider)
   return (
-    <Fragment>
+    <>
       {!loginCredentials.email ? (
         <Btn variant="text" onClick={()=>dispatch({type:OPEN})}>
           Login
@@ -69,7 +71,7 @@ const LoginBtn = () => {
       ) : (
         <div>
           <UserProfile
-            style={{ color: "white" }}
+            style={{ color: "white",marginLeft:'40px',marginRight:10 ,lineHeight:1.1}}
             onClick={(e) => handleOpenMenu(e)}
           >
             {loginCredentials.username}
@@ -79,9 +81,19 @@ const LoginBtn = () => {
             open={Boolean(anchorEl)}
             onClose={handleCloseMenu}
           >
+            {
+               true && <Link to = {`/profile/${loginCredentials.role}/${loginCredentials.role === 'buyer'?'order':''}`} style={{textDecoration:'none',color:'inherit'}}>
+              
+              <MenuItem>
+                Profile
+              </MenuItem>
+              </Link>
+
+            }
             <MenuItem
               onClick={() => {
                 dispatch({type:LOGIN_FAILURE})
+                dispatch({type:LOGOUT_SUCCESS_TOASTIFY})
                 localStorage.removeItem('token');
                 handleCloseMenu();
                 
@@ -95,7 +107,7 @@ const LoginBtn = () => {
       <DataContext.Provider value={{ open, handleClose }}>
         <LoginDialog />
       </DataContext.Provider>
-    </Fragment>
+    </>  
   );
 };
 

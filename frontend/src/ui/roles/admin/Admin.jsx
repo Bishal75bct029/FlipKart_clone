@@ -7,20 +7,27 @@ import { Theme } from '../../theme/customeTheme'
 import Dashboard from './Dashboard'
 import Order from './Order'
 import Products from './Products'
-import { Route, Routes, useLocation } from 'react-router'
+import { Route, Routes, useLocation, useNavigate } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import { LOGIN_SUCCESS } from '../../../redux/constants/userLogin'
+import { useDispatch, useSelector } from 'react-redux'
+import { LOGIN_FAILURE, LOGIN_SUCCESS } from '../../../redux/constants/userLogin'
+// import { loginCredentials } from '../../../redux/reducers/loginCredentials'
 
 const Admin = () => {
     const [selected,setSelected] = useState('Dashboard');
+    const loginCredentials = useSelector(state=>state.loginCredentials)
     const dispatch = useDispatch();
+  const [count, setCount] = useState(0);
+
+  const navigate = useNavigate();
+
     useEffect(()=>{
       const validateLogin =async()=>{
   
         if(localStorage.getItem('token')===null){
         dispatch({type:LOGIN_FAILURE})
+        setCount(1);
 
           return
         }
@@ -32,18 +39,30 @@ const Admin = () => {
           const checkLogin = await axios.post('http://localhost:8000/',null,{headers:headers})
           console.log("love you",headers )
           console.log(checkLogin.data)
-          dispatch({type:LOGIN_SUCCESS  ,payload:checkLogin.data.token})
+          dispatch({type:LOGIN_SUCCESS, payload:checkLogin.data.token});
+          setCount(count=>count +1);
           
         }catch(error){
+          setCount(count + 1)
           console.log('error',error);
           return
         }
       }
       validateLogin();
-    },[])
+    },[]);
+
+    useEffect(() => {
+      if (loginCredentials.role !== "admin" && count !== 0) {
+        console.log(loginCredentials.role, "role");
+        navigate("/");  
+      }
+    }, [loginCredentials, count]);
   
   return (
     <ThemeProvider theme={Theme}>
+      {
+        loginCredentials.role !== 'admin'?<></>
+        :
 
     <div className="plus-jakarta-sans" style={{borderRight:'2px solid #ccc',minHeight:'100vh',width:'100%',backgroundColor:'',height:'100%',display:'flex',fontFamily:'Plus Jakarta Sans, sans-serif',}}>
         <SideNav selected = {selected} setSelected ={setSelected}/>
@@ -59,6 +78,7 @@ const Admin = () => {
           </Routes>
         
     </div>
+  }
     </ThemeProvider>
   )
 }

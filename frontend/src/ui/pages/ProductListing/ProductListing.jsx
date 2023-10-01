@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import React from "react";
 import Filters from "./components/Filters";
 import Space from "../../components/Space";
 import ProductsView from "./components/ProductsView";
@@ -10,36 +9,43 @@ const ProductListing = () => {
   const products = useSelector((state) => state.searchResults);
   console.log(products);
   return (
-    <Box
-      style={{
+    <>
+        <Navbar />
+        {
+          products.loading ?
+          <Box
+          style={{
         margin: "56px 0 0 0",
         width: "100%",
         height: "100%",
         // backgroundColor: "green",
         flexGrow: 1,
       }}
-    >
-      <Navbar />
+      >
       <Box
         style={{
           display: "flex",
           justifyContent: "flex-start",
           height: "100%",
         }}
-      >
-        <Box>
+        >
+        <Box style ={{width:'20%',minWidth:'180px'}}>
           <Space>
             <Filters />
           </Space>
         </Box>
         <Box style={{ flexGrow: 1, height: "100%" }}>
           
-            <ProductsView />
+            <ProductsView type = {'search'} />
           
         </Box>
       </Box>
-    </Box>
-  );
-};
-
-export default ProductListing;
+    </Box>:
+    <></>
+      }
+        </>
+        );
+      };
+      
+      export default ProductListing;
+      

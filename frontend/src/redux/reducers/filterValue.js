@@ -1,6 +1,6 @@
 import { FILTER_SUCCESS } from "../constants/filterValue";
 
-export const filterValue =(state={minValue :0, maxValue:10001},action)=>{
+export const filterValue =(state={minValue :0, maxValue:99999999},action)=>{
     switch(action.type){
 
         case FILTER_SUCCESS:

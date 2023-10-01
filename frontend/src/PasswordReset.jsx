@@ -74,7 +74,7 @@ const PasswordReset = () => {
       );
       const success =  toast.success("Password changed successfully", {
         position: "top-right",
-        autoClose: 2000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -84,7 +84,9 @@ const PasswordReset = () => {
         onClose:()=>{
   
           // navigate('/',{replace:true})
-          window.alert("hello")
+          // if(confirm("Your password has been successfully changed")){
+            navigate('/',{replace:true})
+          // }
         }
       });
       

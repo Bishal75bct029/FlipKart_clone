@@ -87,9 +87,10 @@ const Graph = () => {
             sx={{
               '--ChartsLegend-itemWidth': '190px',
             }}
-            width={600}
-            height={400}
+            
+            height={500}
             margin={{ left: 70 }}
+            // sx ={{minWidth:450}}
           />
         );
 }

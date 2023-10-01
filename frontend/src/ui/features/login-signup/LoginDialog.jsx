@@ -1,5 +1,5 @@
 import { Box, Checkbox, TextField, Typography, styled } from "@mui/material";
-import { Children, createContext, useContext, useState } from "react";
+import { Children, createContext, useContext, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import LoginBtn, { DataContext } from "./LoginBtn";
@@ -197,6 +197,23 @@ const LoginDialog = () => {
       }
     }
   };
+useEffect(()=>{
+  if(!status.login.value){
+    setLoginData({
+      email: "",
+      password: "",
+    });
+
+    setLoginFormError({
+      email: "",
+      password: "",
+    });
+  }
+
+  if(!status.forgotPassword.value){
+    setFrgotPwdData('')
+  }
+},[status])
   const [checked, setChecked] = useState(false);
 
   const handleChange = (event) => {
@@ -228,6 +245,10 @@ const LoginDialog = () => {
           bottom: ``,
         },
       },
+    });
+    setLoginData({
+      'email':'',
+      password:'',
     });
 
     setInfoMessage({
@@ -290,15 +311,20 @@ const LoginDialog = () => {
             <RightSide status={status}>
               <TextField
                 variant="standard"
-                onChange={(e) =>
+                onChange={(e) =>{
+
                   handleLoginValidation(
                     e,
                     loginData,
                     setLoginData,
                     formError,
                     setLoginFormError
-                  )
+                    );
+                    //  setLoginFormError({...loginFormError})
+
+                  }
                 }
+                value={loginData.email}
                 label="Enter Email/Mobile number"
                 name="email"
                 style={{
@@ -309,14 +335,17 @@ const LoginDialog = () => {
               {loginFormError.email && <Error>{loginFormError.email}</Error>}
               <TextField
                 variant="standard"
-                onChange={(e) =>
+                value={loginData.password}
+                onChange={(e) =>{
                   handleLoginValidation(
                     e,
                     loginData,
                     setLoginData,
                     formError,
                     setLoginFormError
-                  )
+                  );
+                  // setLoginFormError({...loginFormError,message:''})
+                }
                 }
                 label="Enter Password"
                 name="password"
@@ -349,7 +378,7 @@ const LoginDialog = () => {
               <OtpBtn
                 variant="contained"
                 onClick={() => {
-                  Login(loginFormError, loginData, dispatch,setLoginFormError);
+                  Login(loginFormError, loginData,setLoginData, dispatch,setLoginFormError);
                 }}
               >
                 Login
@@ -409,6 +438,7 @@ const LoginDialog = () => {
                 variant="standard"
                 label="Enter Mobile number"
                 name="phone"
+                value = {formData.phone}
                 onChange={(e) =>
                   handleValidation(
                     e,
@@ -428,6 +458,7 @@ const LoginDialog = () => {
                 variant="standard"
                 label="Enter Email"
                 name="email"
+                value ={formData.email}
                 onChange={(e) =>
                   handleValidation(
                     e,
@@ -448,6 +479,7 @@ const LoginDialog = () => {
                 variant="standard"
                 label="Enter Username"
                 name="username"
+                value = {formData.username}
                 onChange={(e) =>
                   handleValidation(
                     e,
@@ -469,6 +501,7 @@ const LoginDialog = () => {
                 label="Enter Password"
                 type="password"
                 name="password"
+                value={formData.password}
                 onChange={(e) =>
                   handleValidation(
                     e,
@@ -515,13 +548,13 @@ const LoginDialog = () => {
               <OtpBtn
                 variant="contained"
                 onClick={() => {
-                  handleSignSubmit(formData, formError, setInfoMessage);
+                  handleSignSubmit(formData, setFormData, formError, setInfoMessage);
                 }}
               >
                 CONTINUE
               </OtpBtn>
               <ExistBtn
-                onClick={(e) => handleLogin(e, showDialogStatus, setStatus)}
+                onClick={(e) =>{ handleLogin(e, showDialogStatus, setStatus);setInfoMessage('')}}
                 style={{
                   textTransform: "none",
                   marginTop: "25px",

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Categories from "./components/Categories";
 import Banner from "./components/Banner";
@@ -6,69 +6,88 @@ import Space from "../../components/Space";
 import UsernameProvider from "../../../usecontext/UsernameProvider";
 import { useDispatch, useSelector } from "react-redux";
 import getProducts from "../../../redux/actions/getProducts";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 
 import Slide from "./components/Slide";
 import { LOGIN_FAILURE, LOGIN_SUCCESS } from "../../../redux/constants/userLogin";
 import { loginCredentials } from "../../../redux/reducers/loginCredentials";
 import Footer from "../../components/Footer";
+import { filterProduct } from "../../features/functions/filterProducts";
+import { LOGIN_FAILURE_TOASTIFY, LOGIN_SUCCESS_TOASTIFY, RESET_AUTH_TOAST } from "../../../redux/constants/authToast";
   
 const Home = () => {
-  
   const {productsData} = useSelector((state) => state.getProducts);
-  useEffect(()=>{
-    const validateLogin =async()=>{
-
-      if(localStorage.getItem('token')===null){
-        dispatch({type:LOGIN_FAILURE})
-        return
-      }
-      try{
-        const token = localStorage.getItem('token');
-        const headers = {
-          'Authorization':`${token}`
-        }
-        const checkLogin = await axios.post('http://localhost:8000/',null,{headers:headers})
-        console.log("love you")
-        console.log(checkLogin.data)
-        dispatch({type:LOGIN_SUCCESS,payload:checkLogin.data.token})
-        
-      }catch(error){
-        console.log('error',error);
-        return
-      }
-    }
-    validateLogin();
-  },[])
+  const authToast = useSelector(state=>state.authToast);
+  const [isProduct,setIsProduct] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
+  
 
+   const [state,setState] = useState(0);
+  useEffect(()=>{
+    console.log(authToast,'idea')
+    if(authToast.login === 'success'){  
+      console.log(authToast,'haha  ')
+      toast.success("Login Successful",{autoClose:2000}) 
+      console.log("kina change vako timi");       
+    }else if(authToast.login === 'logout'){
+      toast.info('Logged Out Successfully',{autoClose:2000});
+      console.log('Vaeau ra   ');
+      
+
+      
+    } else if(authToast.login ==='fail'){
+      toast.error("Login Failed");
+      console.log("raja rani")  
+    }
+    if(authToast.login || authToast.signup){
+      console.log("hero")
+
+      dispatch({type:RESET_AUTH_TOAST})
+    }
+  },[authToast]);  
+         
   useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch ]); 
+    dispatch(getProducts(setIsProduct));
+  }, []);             
 
-
-  // console.log(productsData); 
-
-  // console.log(states)
+  
   return (
+    <>
+        <Navbar />
+      {  isProduct ?
     <div>
-      <Navbar />
+
       <Categories />
       <Space>
         <Banner />
       </Space>
       <Space>
         {/* <Typography>Hi</Typography> */}
-        <Slide products={productsData} title ="Best of Electronics" />
+        <Slide products={filterProduct(productsData,'electronics')} title ="Best of Electronics"category = {'electronics'} />
       </Space>
       <Space>
-        <Slide products={productsData} title ="Beauty, Food, Toys and more"/>
+        <Slide products={filterProduct(productsData,'beauty')} title ="Beauty & Cosmetics"category = {'beauty'}/>
       </Space>
       <Space>
-        <Slide products={productsData} title ="Gift for Your Loved Ones"/>
+        <Slide products={filterProduct(productsData,'gifts')} title ="Gift for Your Loved Ones"category = {'gifts'}/>
       </Space>
+      <Space>
+        <Slide products={filterProduct(productsData,'fashion')} title ="Fashion & Design"category = {'fashion'}/>
+      </Space>
+      <Space>
+        <Slide products={filterProduct(productsData,'mobile')} title ="Mobiles & Accessories"category = {'mobile'}/>
+      </Space>
+      <Space>
+        <Slide products={filterProduct(productsData,'travel')} title ="Tour & Travels" category = {'travel'}/>
+      </Space>
+      <ToastContainer/>
       <Footer/>
-    </div>
+    </div> : <></>
+    }
+      </>
   );
 };
 

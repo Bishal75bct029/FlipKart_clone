@@ -114,9 +114,10 @@ export const handleSignUp = (e,showDialogStatus,setStatus) => {
         setLoginFormError((formError) => ({
           ...formError,
           email: "*Must be type email",
+          message:''
         }));
       } else {
-        setLoginFormError((formError) => ({ ...formError, email: "" }));
+        setLoginFormError((formError) => ({ ...formError, email: "",message:'' }));
       }
     }
 
@@ -129,12 +130,14 @@ export const handleSignUp = (e,showDialogStatus,setStatus) => {
         setLoginFormError((loginFormError) => ({
           ...loginFormError,
           password: "Please Enter the valid password",
+          message:''
         }));
         console.log("are you here?");
       } else {
         setLoginFormError((loginFormError) => ({
           ...loginFormError,
           password: "",
+          message:''
         }));
       }
     }

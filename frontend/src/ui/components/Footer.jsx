@@ -1,30 +1,34 @@
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { Box, Divider, Grid, Typography ,styled} from "@mui/material";
 import React from "react";
+
+const Wrap = styled(Box)(({ theme }) => ({
+  display: "flex",
+  width: "100%",
+  flexWrap: "wrap",
+  justifyContent: "space-between",
+  margin: "0 0px 25px 0",
+  gap:15,
+  [theme.breakpoints.down('lg')]:{
+    justifyContent:'space-between'
+  }
+}));
 
 const Footer = () => {
   return (
-    <Grid
-      container
-      style={{ backgroundColor: "#323232", margin: "10px 0 0 0 " }}
-    >
-      <Grid item xs={12}>
+    <Box style={{ backgroundColor: "#323232", margin: "10px 0 0 0 " }}>
+      <Box>
         <Box
           style={{
             display: "flex",
             width: "100%",
-            height: "261px",
+            height: "auto",
+            // flexWrap:'wrap',
             margin: "0px 0 0 0",
             color: "white",
             padding: "40px 60px 0",
           }}
         >
-          <Box
-            style={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "space-between",
-            }}
-          >
+          <Wrap>
             <Box style={{ display: "flex", flexDirection: "column" }}>
               <Typography
                 style={{
@@ -283,42 +287,55 @@ const Footer = () => {
                 Telephone: 044-45614700
               </Typography>
             </Box>
+          </Wrap>
+        </Box>
+      </Box>
+      <Grid
+        item
+        xs={12}
+        md={12}
+        lg={12}
+        sm={12}
+        spacing={8}
+        style={{ borderTop: "1px solid #454d5e", height: 69 }}
+      >
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            height: "100%",
+            padding: "0 20px",
+            alignItems: "center",
+            flexWrap: "wrap",
+            color: "white",
+          }}
+        >
+          <Box>
+            <Typography style={{ fontSize: 12 }}>Become a Seller</Typography>
+          </Box>
+          <Box>
+            <Typography style={{ fontSize: 12 }}>Advertise</Typography>
+          </Box>
+          <Box>
+            <Typography style={{ fontSize: 12 }}>Gift Cards</Typography>
+          </Box>
+          <Box>
+            <Typography style={{ fontSize: 12 }}>Help Center</Typography>
+          </Box>
+          <Box>
+            <Typography style={{ fontSize: 12 }}>
+              2007-2023 Flipkart.com
+            </Typography>
+          </Box>
+          <Box style={{ height: "18px", width: "377px" }}>
+            <img
+              src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/payment-method-c454fb.svg"
+              alt=""
+            />
           </Box>
         </Box>
-        <Grid item xs={12} style={{borderTop:'1px solid #454d5e',height:69,}}>
-                
-          <Box
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-              height:'100%',
-              padding:'0 20px',
-              alignItems:'center',
-              color: "white",
-            }}
-          >
-            <Box>
-              <Typography style={{fontSize:12}}>Become a Seller</Typography>
-            </Box>
-            <Box>
-              <Typography style={{fontSize:12}}>Advertise</Typography>
-            </Box>
-            <Box>
-              <Typography style={{fontSize:12}}>Gift Cards</Typography>
-            </Box>
-            <Box>
-              <Typography style={{fontSize:12}}>Help Center</Typography>
-            </Box>
-            <Box>
-              <Typography style={{fontSize:12}}>2007-2023 Flipkart.com</Typography>
-            </Box>
-            <Box style ={{height:'18px',width:'377px'}}>
-              <img src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/payment-method-c454fb.svg" alt="" />
-            </Box>
-          </Box>
-        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 };
 

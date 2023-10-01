@@ -1,211 +1,133 @@
 import { Box, Grid, ThemeProvider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ShowInfo from "../components/ShowInfo";
-import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
-import './custom.css'
-import {Theme,LabelTheme} from '../../theme/customeTheme'
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+// import { Pie } from "react-chartjs-2";
+import "./custom.css";
+import { Theme, LabelTheme } from "../../theme/customeTheme";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { LineChart } from "@mui/x-charts/LineChart";
 import Graph from "../components/Graph";
 import { Pie } from "react-chartjs-2";
+// import {Chart, ArcElement} from 'chart.js'
 import { red } from "@mui/material/colors";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  DASHBOARD_SUCCESS,
+  DASHBOARD_FAILURE,
+} from "../../../redux/constants/getDashboard";
 // ChartJS.register(ArcElement, Tooltip, Legend);
 
-const SellerBody = ({value,setSelected}) => {
-  useEffect(()=>setSelected('Dashboard'),[])
 
-  const [chart, SetChart] = useState("Items");
-  // const [selected,setSelected] = useState('item')
-  const gradientColors = [
-    'linear-gradient(45deg, #FF5733, #FFD133)',
-    'linear-gradient(45deg, #33A1FF, #33FF87)',
-    'linear-gradient(45deg, #A833FF, #FF33D1)',
-    'linear-gradient(45deg, #FFD133, #FFAB33)',
-    'linear-gradient(45deg, #33D1FF, #33FFA1)',
-    'linear-gradient(45deg, #33FF87, #87FF33)'
-  ];
-  const handleChartClick = (value) => {
-    SetChart((chart) => value);
+ChartJS.register(ArcElement,Legend,Tooltip);
+
+const SellerBody = ({ value, setSelected }) => {
+  const loginCredentials = useSelector((state) => state.loginCredentials);
+  const dashboardData = useSelector((state) => state.getDashboardData);
+  const dispatch = useDispatch();
+
+  useEffect(() => setSelected("Dashboard"), []);
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/backend_orders?orderType=all",
+          { headers: { Authorization: loginCredentials.token } }
+        );
+        console.log(response.data, "haha");
+        dispatch({
+          type: DASHBOARD_SUCCESS,
+          payload: response.data.orderTotals,
+        });
+      } catch (error) {
+        // console.log(error.response.data)
+        dispatch({ type: DASHBOARD_FAILURE });
+        console.log("k vayo  timilai");
+      }
+    };
+    fetchDashboardData();
+  }, []);
+
+  console.log(dashboardData[0], "iam dashing");
+  const data = {
+    labels:dashboardData[0]?.topFive.map((data)=> data._id) ,
+    datasets: [
+      {
+        data: dashboardData[0]?.topFive.map((data)=> data.totalPrice),
+        backgroundColor: ["#AEDFF7", "#C9ECAE", "#FFF4A3", "#D4C4E4", "#FAD7E1"],
+      },
+    ],
+    hoverOffset:4
   };
 
-  
   return (
     <ThemeProvider theme={LabelTheme}>
-
-    <Box
-      style={{ margin: "10px", fontFamily: "Plus Jakarta Sans, sans-serif" }}
-    >
-      <Grid
-        container
-        spacing={4}
-        // alignItems="center"
-        // justifyContent="center"
-        style={{ padding: "15px 5px 15px 15px" }}
+      <Box
+        style={{ margin: "10px", fontFamily: "Plus Jakarta Sans, sans-serif" }}
       >
-        <Grid item xs={12}>
+        <Box>
           <Typography
             style={{
               fontWeight: 600,
               fontSize: 28,
               color: "#1A2142",
               fontFamily: "Plus Jakarta Sans, sans-serif",
+              width: "330px",
+              margin: "10px auto",
             }}
           >
             eCommerce Dashboard
           </Typography>
-        </Grid>
-        <Grid item>
-          <ShowInfo />
-        </Grid>
-        <Grid item>
-          <ShowInfo />
-        </Grid>
-        <Grid item>
-          <ShowInfo />
-        </Grid>
-        <Grid item>
-          <ShowInfo />
-        </Grid>
-        <Grid item>
-          <ShowInfo />
-        </Grid>
-        <Grid item xs={5}>
+        </Box>
+        <Box
+          // alignItems="center"
+          // justifyContent="center"
+          style={{
+            padding: "15px 5px 15px 15px",
+            gap: 20,
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+          }}
+        >
           <Box>
-            <Box
-              style={{
-                display: "flex",
-                width: "37%",
-                justifyContent: "",
-                borderRadius:4,
-                backgroundColor:'#d3d3d3'
-              }}
-              >
-              <Typography
-                onClick={() => handleChartClick("Items")}
-                style={{ backgroundColor: `${chart ==='Items'?'white':''} `, cursor: "pointer",paddingRight:10,padding:4,borderRadius:'',color:'#797E82',fontWeight:500 }}
-                >
-                Items
-              </Typography>
-              <Typography
-                onClick={() => handleChartClick("Price")}
-                style={{ backgroundColor:`${chart ==='Price'?'white':''} `, cursor: "pointer" ,paddingRight:10,padding:4,borderRadius:'',color:'#797E82',fontWeight:500}}
-                >
-                Price
-              </Typography>
-              <Typography
-                onClick={() => handleChartClick("Order")}
-                style={{ backgroundColor: `${chart ==='Order'?'white':''} `, cursor: "pointer",paddingRight:10,padding:4,borderRadius:'',color:'#797E82',fontWeight:500 }}
-                >
-                Order
-              </Typography>
-            </Box>
-            {chart === "Items" && (
-              <PieChart
-              
-              series={[
-                {
-                  arcLabel: (data) => `${data.label} (${data.value})`,
-                  arcLabelMinAngle: 45,
-                  data: [
-                    { id: 0, value: 15, label: "Item A", fill:gradientColors[0] },
-                    { id: 1, value: 15, label: "Item B", fill:gradientColors[1] },
-                    { id: 2, value: 20, label: "Item C", fill:gradientColors[2] },
-                    { id: 3, value: 15, label: "Item D", fill:gradientColors[3] },
-                    { id: 4, value: 15, label: "Item E", fill:gradientColors[4] },
-                    { id: 5, value: 20, label: "Item F", fill:gradientColors[5] },
-                  ],
-                  innerRadius:20,
-                  cx:140,
-                  cy:150
-                },
-            ]}
-            sx={{
-              [`& .${pieArcLabelClasses.root}`]: {
-                fill: 'white',
-                //   fontWeight: 'bold',
-                
-                  fontSize:'10px'
-                },
-              }}
-              
-                width={450}
-                height={300}
-                />
-              )}
-            {chart === "Price" && (
-              <PieChart
-              
-              series={[
-                {
-                  arcLabel: (data) => `${data.label} (${data.value})`,
-                  arcLabelMinAngle: 45,
-                  data: [
-                    { id: 0, value: 15, label: "Price A", fill:gradientColors[0] },
-                    { id: 1, value: 15, label: "Price B", fill:gradientColors[1] },
-                    { id: 2, value: 20, label: "Price C", fill:gradientColors[2] },
-                    { id: 3, value: 15, label: "Price D", fill:gradientColors[3] },
-                    { id: 4, value: 15, label: "Price E", fill:gradientColors[4] },
-                    { id: 5, value: 20, label: "Price F", fill:gradientColors[5] },
-                  ],
-                  innerRadius:20,
-                  cx:140,
-                  cy:150
-                },
-            ]}
-            sx={{
-              [`& .${pieArcLabelClasses.root}`]: {
-                fill: 'white',
-                //   fontWeight: 'bold',
-                
-                  fontSize:'10px'
-                },
-              }}
-              
-                width={450}
-                height={300}
-                />
-                )}
-            {chart === "Order" && (
-              <PieChart
-              
-              series={[
-                {
-                  arcLabel: (data) => `${data.label} (${data.value})`,
-                  arcLabelMinAngle: 45,
-                  data: [
-                    { id: 0, value: 15, label: "Order A", fill:gradientColors[0] },
-                    { id: 1, value: 15, label: "Order B", fill:gradientColors[1] },
-                    { id: 2, value: 20, label: "Order C", fill:gradientColors[2] },
-                    { id: 3, value: 15, label: "Order D", fill:gradientColors[3] },
-                    { id: 4, value: 15, label: "Order E", fill:gradientColors[4] },
-                    { id: 5, value: 20, label: "Order F", fill:gradientColors[5] },
-                  ],
-                  innerRadius:20,
-                  cx:140,
-                  cy:150
-                },
-            ]}
-            sx={{
-              [`& .${pieArcLabelClasses.root}`]: {
-                fill: 'white',
-                //   fontWeight: 'bold',
-                
-                  fontSize:'10px'
-                },
-              }}
-              
-                width={450}
-                height={300}
-                />
-                  )}
+            <ShowInfo
+              title={`Pending Order`}
+              dashboardData={dashboardData[0]?.totalPendingCost}
+            />
           </Box>
-        </Grid>
-        <Grid item xs={5} style={{ margin: "0 20px" }}>
-          <Graph />
-        </Grid>
-      </Grid>
-    </Box>
-                  </ThemeProvider>
+          <Box>
+            <ShowInfo
+              title={`Today's Order`}
+              dashboardData={dashboardData[0]?.totalTodayCost}
+            />
+          </Box>
+          <Box>
+            <ShowInfo
+              title={`Completed Orders`}
+              dashboardData={dashboardData[0]?.totalSoldCost}
+            />
+          </Box>
+          <Box>
+            <ShowInfo
+              title={`In Processing`}
+              dashboardData={dashboardData[0]?.totalProcessingCost}
+            />
+          </Box>
+          <Box>
+            <ShowInfo title={`Monthly Sales`}  dashboardData={dashboardData[0]?.totalMonthSales}/>
+          </Box>
+        </Box>
+        <br />
+        <Box style ={{width:'100%',height:'450px',alignItems:'center',justifyContent:'center',display:'flex',flexDirection:'column'}}>
+          <Typography style={{fontSize:28,color:'#676767',marginTop:'20px'}}>Top 5 Sold Products</Typography>
+          <Pie
+            data={data}
+            options={{ responsive: true, maintainAspectRatio: true,width:400,height:4000 }}
+          />
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
 };
 

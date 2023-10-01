@@ -4,6 +4,15 @@ import "react-multi-carousel/lib/styles.css";
 import { bannerData } from "../../../../constant/constant";
 import { Box, styled } from "@mui/material";
 
+const ResponsiveBanner = styled(Box)(({theme})=>({
+  marginTop: -15,
+  marginBottom: -8,
+  [theme.breakpoints.down('sm')]:{
+    marginTop:-20,
+    height:110
+  }
+}))
+
 const Banner = () => {
   const responsive = {
     superLargeDesktop: {
@@ -25,12 +34,27 @@ const Banner = () => {
     },
   };
 
-  const Img = styled('img')`
-    height: 280px;
-    width: 100%;
-  `
+  const Img = styled('img')(({theme})=>({
+
+    height: 280,
+    width: '100%',
+    // marginBottom:'-50px',
+    // marginTop:'10px',
+    [theme.breakpoints.down('sm')]:{
+      height:'100px',
+      marginTop:'10px',
+      objectFit: 'contain',
+    },
+    [theme.breakpoints.down('md')]:{
+      // height:'100px',
+      // marginTop:'10px',
+      // objectFit: 'contain',
+    }
+  }))
+
+  
   return (
-    <Box style = {{}}>
+    <ResponsiveBanner>
         <Carousel
         swipeable={false}
         draggable={false}
@@ -56,7 +80,7 @@ const Banner = () => {
             );
         })}
         </Carousel>
-    </Box>
+    </ResponsiveBanner>
   );
 };
 

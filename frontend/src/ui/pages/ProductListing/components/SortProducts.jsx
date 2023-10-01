@@ -14,17 +14,18 @@ import queryString from "query-string";
 import { useLocation } from "react-router";
 import { SearchProduct } from "../../../../redux/actions/searchResult";
 
-const SortProducts = () => {
+const SortProducts = ({type}) => {
   const location = useLocation()
   const queryParams = queryString.parse(location.search);
   const searchParam = queryParams.search
+  const categoryParam = queryParams.category;
   const [value, setValue] = useState(1);
   // const products = useSelector(state=>state.searchResults);
   const [test, setTest] = useState([]);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const products = useSelector((state) => state.searchResults);
-  const copyProducts = [...products];
+  // const copyProducts = [...products];
   const filters = useSelector(state=>state.filterValue);
   function getRandomSortOrder() {
     // This function returns a random number between -1, 0, and 1
@@ -32,18 +33,26 @@ const SortProducts = () => {
   }
   
   console.log(filters,'chomu')
-  const handleSort = (type) => {
+  console.log(type,'i am type')
+  const handleSort = (types) => {
+    let apiUrl
+    if(type === 'search'){
 
-      let apiUrl
-      if(filters.minValue != 0 || filters.maxValue != 10001){
+      
+      if(filters.minValue != 0 || filters.maxValue != 99999999){
         console.log("k xa")
-
-         apiUrl = `http://localhost:8000/sortProducts?sort=${type}&search=${searchParam}&minPrice=${filters.minValue}&maxPrice=${filters.maxValue}`
-         console.log(apiUrl,'k vayo yr')
+        
+        apiUrl = `http://localhost:8000/sortProducts?sort=${types}&search=${searchParam}&minPrice=${filters.minValue}&maxPrice=${filters.maxValue}`
+        console.log(apiUrl,'k vayo yr')
       }else{
-
-        apiUrl = `http://localhost:8000/sortProducts?sort=${type}&search=${searchParam}`
+        
+        apiUrl = `http://localhost:8000/sortProducts?sort=${types}&search=${searchParam}`
       }
+    }else{
+      
+        
+        apiUrl = `http://localhost:8000/product_by_category?sort=${types}&category=${categoryParam}`
+    }
       
         console.log(apiUrl,'honi')
         dispatch(SearchProduct(apiUrl))
@@ -63,13 +72,16 @@ const SortProducts = () => {
         justifyContent: "space-between",
         height: "80px",
         alignItems: "center",
-        marginRight: "20px",
+        margin: `${type =='search'?'0 20px 0 0':'0 60px'}`,
       }}
     >
+    
       <Typography
         style={{ fontSize: 14, color: "#666666", margin: "20px 10px" }}
       >
-        {products.length} items found for {searchParam}
+
+
+        {products.search_results.length} items found for {type ==='search'?searchParam:categoryParam}
       </Typography>
       <Box style={{ display: "flex", alignItems: "center" }}>
         {/* <span>Sorted By:</span> */}
@@ -101,7 +113,7 @@ const SortProducts = () => {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
           >
-            <MenuItem value={1} onClick={() => {handleSort('best');etValue(1)}}>
+            <MenuItem value={1} onClick={() => {handleSort('best');setValue(1)}}>
               Best Match
             </MenuItem>
             <MenuItem value={2} onClick={() => {handleSort('asc');setValue(2)}}>

@@ -9,10 +9,13 @@ import Filters from "./ui/pages/ProductListing/components/Filters";
 import ProductListing from "./ui/pages/ProductListing/ProductListing";
 import Seller from "./ui/roles/seller/Seller";
 // import { CartesianContext } from "@mui/x-charts/context/CartesianContextProvider";
-import Cart from "./ui/pages/order/Cart";
+import Cart from "./ui/pages/cart/Cart";
 import PasswordReset from "./PasswordReset";
 import Admin from "./ui/roles/admin/Admin";
 import VerifyUser from "./ui/components/VerifyUser";
+import ViewList from "./ui/category_view/ViewList";
+import Buyer from "./ui/roles/buyer/Buyer";
+import PageNotFound from "./ui/PageNotFound/PageNotFound";
 
 function App() {
   return (
@@ -26,9 +29,12 @@ function App() {
             <Route path="/products/*" element={<ProductListing />} />
             <Route path="/profile/seller//*" element={<Seller />} />
             <Route path="/profile/admin//*" element={<Admin />} />
-            <Route path="/order" element={<Cart />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path = "/signup" element = {<VerifyUser/>}/>
+            <Route path = "/profile/buyer/order" element = {<Buyer/>}/>
             <Route path="/reset_password" element ={<PasswordReset/>}/>
+            <Route path = "/category" element = {<ViewList/>}/>
+            <Route path = "/*" element = {<PageNotFound/>}/>
           </Routes>
         </BrowserRouter>
       </Provider>

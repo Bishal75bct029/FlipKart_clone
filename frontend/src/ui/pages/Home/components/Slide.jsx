@@ -1,34 +1,65 @@
-import styled from "@emotion/styled";
-import { Box, Button, Grid, Typography } from "@mui/material";
+// import  from "@emotion/styled";
+import { Box, Button, Grid, Typography,styled } from "@mui/material";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
 
-const LeftPart = styled(Box)`
-  width: 13%;
-  border-right: 1px solid #f0f0f0;
-  height: 321px;
-  /* pad */
-  padding: 24px 10px 124px;
-  /* background-color: green; */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  float: left;
-`;
-const ViewBtn = styled(Button)`
-  background-color: #2874f0;
-  padding: 10px 20px;
-  border-radius: 2px;
-  font-size: 13px;
-  font-weight: 500;
-  display: block;
-  width: auto;
-  height: auto;
-  margin: auto;
-  margin-top: 24px;
-`;
+const LeftPart = styled(Box)(({theme})=>({
+
+  width: '13%',
+  borderRight: '1px solid #f0f0f0',
+  height: 321,
+  padding: '24px 10px 124px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  float: 'left',
+  marginTop:0,
+  [theme.breakpoints.down("lg")]: {
+    flexDirection: "row",
+    justifyContent:'space-between',
+    width:'100%',
+    float:'none',
+    padding:0,
+    marginTop:-8,
+    // backgroundColor:'green',
+    height:60,
+    padding:'0 10px'
+    
+  },
+}))
+
+const NewBox =styled(Box)(({theme})=>({
+  marginTop:60,
+  [theme.breakpoints.down('lg')]:{
+    display:'flex',
+    justifyContent:'space-between',
+    width:'100%'
+  }
+  // display:'none'
+}));
+
+const ViewBtn = styled(Button)(({theme})=>({
+
+  backgroundColor: '#2874f0',
+  padding: '10px 20px',
+  borderRadius: 2,
+  fontSize: 13,
+  fontWeight: 500,
+  display: 'block',
+  width: 'auto',
+  height: 'auto',
+  margin: 'auto',
+  marginTop:30,
+  [theme.breakpoints.down('lg')]:{
+    marginTop:-4,
+    marginBottom:10,
+    
+  }
+}))
+  
+
 const RightPart = styled(Box)`
   /* float: right; */
   /* background-color: red; */
@@ -44,6 +75,8 @@ const RightPart = styled(Box)`
 const Img = styled(`img`)`
   height: 170px;
   width: auto;
+  border-radius: 2px;
+  max-width: 200px;
 `;
 const Wrapper = styled(Box)`
   text-align: center;
@@ -55,30 +88,36 @@ const Wrapper = styled(Box)`
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
   }
 `;
-const Slide = ({ products, title, selected }) => {
+const Slide = ({ products, title, selected,category }) => {
   // let product1 = products[0]
   // console.log(products)
   // products = Object.values(products)
   const responsive = {
     desktop: {
-      breakpoint: { max: 3000, min: 1024 },
+      breakpoint: { max: 3000, min: 1100 },
       items: 5,
+      slidesToSlide:2,
     },
     tablet: {
-      breakpoint: { max: 1024, min: 500 },
-      items: 3,
+      breakpoint: { max: 1100, min: 800 },
+      items: 4,
+    },
+    medium:{
+      breakpoint:{max:800,min:640},
+      items:3,
     },
     mobile: {
-      breakpoint: { max: 500, min: 0 },
-      items: 1,
+      breakpoint: { max: 640, min: 0 },
+      items: 2,
     },
   };
 
   // console.log(products,'Hello baby')
   return (
-    <Box style={{ backgroundColor: "white" }}>
+    <Box style={{ backgroundColor: "white",marginTop:'0' }}>
       <LeftPart>
-        <Box style={{ marginTop: 50 }}>
+        <NewBox>
+
           <Box
             style={{
               fontSize: 26,
@@ -86,12 +125,16 @@ const Slide = ({ products, title, selected }) => {
               lineHeight: 1.38,
               wordWrap: "beak-word",
               textAlign: "center",
+              
             }}
-          >
+            >
             {title}
           </Box>
+          <Link to ={`/category?category=${category}`} style={{textDecoration:'none',color:'inherit'}}>
           <ViewBtn variant="contained"> View All</ViewBtn>
-        </Box>
+          </Link>
+        
+            </NewBox>
       </LeftPart>
 
       <RightPart>
@@ -107,7 +150,7 @@ const Slide = ({ products, title, selected }) => {
             keyBoardControl={true}
             transitionDuration={500}
             containerClass="carousel-container"
-            removeArrowOnDeviceType={["tablet", "mobile"]}
+            
           >
             {products?.map((product) => {
               return (
@@ -132,7 +175,14 @@ const Slide = ({ products, title, selected }) => {
                         fontSize: 14,
                         fontWeight: 500,
                         margin: '10px 0 0 3px',
-                        whiteSpace: "nowrap",
+                        
+                        display: "-webkit-box",
+                        WebkitLineClamp: 1,
+                        WebkitBoxOrient: "vertical",
+                        whiteSpace: "normal",
+                        paddingTop: 1,
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
                       }}
                     >
                       {product.title.shortTitle}

@@ -10,6 +10,7 @@ const { AddToCart, getCartData, deleteCart } = require('../controller/addToCart.
 const { searchProducts, filterProducts, sortProducts } = require('../controller/searchProduct.js');
 const { validateLogin } = require('../controller/initialLoginValidation.js');
 const getProductByCategories = require('../controller/categories.js');
+const { getBackendOrders } = require('../controller/getOrdersBackend.js');
 
 const router = express.Router();
 
@@ -27,7 +28,7 @@ router.get('/getSellerProducts/',isAuth,fetchProductBySeller)
 router.get('/product_by_category',getProductByCategories)
 router.get('/cart_data',isAuth,getCartData)
 router.get('/get_orders',isAuth,getOrders);
-// router.get('/get_orders',isAuth,getOrders);
+router.get('/backend_orders',isAuth,getBackendOrders);
 
 router.post('/password_changed',passwordChanged);
 router.post('/signup',userSignUp.createUser);

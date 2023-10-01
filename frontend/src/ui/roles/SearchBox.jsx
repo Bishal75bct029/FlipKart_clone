@@ -29,7 +29,7 @@ const SearchBox = ({products,setSearchedProducts}) => {
             value={search}
             style={{
                 width:'100%',
-                minWidth:'300px',    
+                   
             }}
             inputProps={{
                 style:{

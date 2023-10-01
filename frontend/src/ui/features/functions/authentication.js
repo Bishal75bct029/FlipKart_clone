@@ -5,7 +5,7 @@ import { login } from "../../../redux/actions/login";
 
 
 
-export const handleSignSubmit = async (formData,formError,setInfoMessage) => {
+export const handleSignSubmit = async (formData,setFormData,formError,setInfoMessage) => {
   
     
     // console.log('error hai kya',formError)
@@ -29,6 +29,13 @@ export const handleSignSubmit = async (formData,formError,setInfoMessage) => {
       if (response.status == 200) {
         console.log("User created Successfully");
         setInfoMessage({ success: true, message: response.data });
+        setFormData({
+          phone: "",
+          email: "",
+          username: "",
+          password: "",
+          seller: false,
+        })
       }
 
       
@@ -42,7 +49,7 @@ export const handleSignSubmit = async (formData,formError,setInfoMessage) => {
     }
   };
 
-  export const Login = async (loginFormError,loginData,dispatch,setLoginFormError) => {
+  export const Login = async (loginFormError,loginData,setLoginData,dispatch,setLoginFormError) => {
     try{
 
       
@@ -56,7 +63,7 @@ export const handleSignSubmit = async (formData,formError,setInfoMessage) => {
         return;
       }
       console.log(loginData,"Ma login Data hu hai ")
-      dispatch(login(loginData,setLoginFormError))
+      dispatch(login(loginData,setLoginData,setLoginFormError))
     }catch(error){
       console.log("kanxi ")
     }

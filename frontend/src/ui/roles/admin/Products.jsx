@@ -29,7 +29,7 @@ const  Products = ({setSelected}) => {
     dispatch(getProducts());
   }, [ ]);  
   const {productsData} = useSelector(state=>state.getProducts);
-  console.log("products data",productsData);
+  // console.log("products data",productsData);
   const [searchedProducts, setSearchedProducts] = useState([...productsData]);
   useEffect(()=>
   {
@@ -42,8 +42,8 @@ const  Products = ({setSelected}) => {
   setSlicedProducts(searchedProducts.slice(0,10))
 
   },[searchedProducts])
-  console.log(searchedProducts)
-  console.log("hello")
+  // console.log(searchedProducts)
+  // console.log("hello")
   
   const deleteProduct = async (id)=>{
     try{
@@ -55,19 +55,19 @@ const  Products = ({setSelected}) => {
         }
         const deleted = await axios.delete(`http://localhost:8000/deleteProduct/${id}`,headers);
         dispatch(getProducts());
-        console.log(headers,'headers')
+        // console.log(headers,'headers')
         
-        console.log("Successfully deleted",response.data.message);
+        // console.log("Successfully deleted",response.data.message);
       }
     }catch(error){
-      console.log("Error",error.response.data.message)
+      // console.log("Error",error.response.data.message)
     }
   }
   const handlePageChange = (event, newPage) => {
     // You can perform your custom logic here
     setCurrentPage(newPage);
     setSlicedProducts(productsData.slice((newPage - 1) * 10 , newPage*10 ))
-    console.log(newPage,'newpage')
+    // console.log(newPage,'newpage')
     // For example, you can fetch data for the new page from an API
     // or update the displayed content based on the new page.
   };

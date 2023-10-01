@@ -1,0 +1,5 @@
+export const CART_SUCCESS_TOAST = 'CART_SUCCESS_TOAST';
+export const CART_FAILED_TOAST = 'CART_FAILED_TOAST';
+export const ORDER_SUCCESS_TOAST = 'ORDER_SUCCESS_TOAST';
+export const ORDER_FAILED_TOAST = 'ORDER_FAILED_TOAST';
+export const RESET_CART_TOAST = 'resetcarttoast';

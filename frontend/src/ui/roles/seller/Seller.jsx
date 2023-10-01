@@ -24,7 +24,7 @@ const Seller = () => {
     const validateLogin = async () => {
       if (localStorage.getItem("token") === null) {
         dispatch({ type: LOGIN_FAILURE });
-        setCount(1);
+        setCount(count=>count+1);
 
         return;
       }
@@ -41,13 +41,13 @@ const Seller = () => {
         setCount((count) => count + 1);
         dispatch({ type: LOGIN_SUCCESS, payload: checkLogin.data.token });
       } catch (error) {
-        setCount(1);
+        setCount(count=>count+1);
         console.log("error", error);
         return;
       }
     };
     validateLogin();
-  }, [dispatch]);
+  }, []);
   useEffect(() => {
     if (loginCredentials.role !== "seller" && count !== 0) {
       console.log(loginCredentials.role, "role");

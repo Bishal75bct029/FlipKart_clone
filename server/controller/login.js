@@ -14,13 +14,18 @@ const login = async (request, response) => {
       console.log(request.body, "iam request.body ");
       let result = await UserSchema.findOne({ email: request.body.email });
       if (result) {
-        bcrypt.compare(
-          request.body.password,
+        try{
+
+          bcrypt.compare(
+            request.body.password,
           result.password,
+      
           function (err, hash) {
             if (err) {
+              throw new Error
               return response.status(500).json({ message: err });
             } else if (hash) {
+              console.log(hash,'hash ho ma')
               console.log(hash, "iamresult");
               if (result.status === "verified") {
                 result = result.toObject();
@@ -42,11 +47,16 @@ const login = async (request, response) => {
                 return response.status(200).json(responseData);
               }
               return response
-                .status(400)
-                .json({ message: "Please verify your id through mail" });
+              .status(400)
+              .json({ message: "Please verify your id through mail" });
+            }else{
+              return response.status(400).json({message:"Invalid Credentials"})
             }
           }
-        );
+          );
+        }catch(error){
+          return response.status(404).json({message:error})
+        }
       } else {
         return response.status(404).json({ message: "Invalid Credentials" });
       }

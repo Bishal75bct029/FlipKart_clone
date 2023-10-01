@@ -6,6 +6,8 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
@@ -18,18 +20,20 @@ import axios from "axios";
 import { GET_PRODUCTS_SUCCESS } from "../../../redux/constants/getProduct";
 import SearchBox from "../SearchBox";
 import PaginationRounded from "../../components/Pagination";
+import { RESET_PRODUCT_TOAST } from "../../../redux/constants/productsToast";
 
 const Products = ({ setSelected }) => {
   useEffect(() => setSelected("Product"), []);
-  const [currentPage, setCurrentPage] = useState(1);
+  const productToast = useSelector(state=>state.productToast);
   
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [slicedProducts,setSlicedProducts] = useState(products.slice(0,9));
   const [searchedProducts, setSearchedProducts] = useState([...products]);
   const [action, setAction] = useState("");
   const [success, setSuccess] = useState(0);
   const { productsData } = useSelector((state) => state.getProducts);
-  console.log(productsData, "lalalala");
+  // console.log(productsData, "lalalala");
   const loginCredentials = useSelector((state) => state.loginCredentials);
   const [id, setId] = useState();
   const dispatch = useDispatch();
@@ -53,7 +57,23 @@ const Products = ({ setSelected }) => {
     };
     fetchProduct();
   }, [dispatch, success]);
-  useEffect(() => {
+
+  useEffect(()=>{
+    if(productToast.product === 'added'){
+      toast.success("Successfully added")
+    }else if(productToast.product === 'updated'){
+      console.log("Gorulaal")
+      toast.success("Sucessfully Updated");
+    }
+
+    console.log(productToast,'Toast kaney ho')
+    if(productToast.product || productToast.order){
+
+      dispatch({type:RESET_PRODUCT_TOAST})
+    }
+
+  },[productToast])
+  useEffect(() => { 
     setSearchedProducts(products);
   }, [products]);
   useEffect(()=>{
@@ -61,17 +81,18 @@ const Products = ({ setSelected }) => {
     setSlicedProducts(searchedProducts.slice(0,10))
   },[searchedProducts])
 
-  console.log(products, "products");
+  // console.log(products, "products");
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
     setAction("");
   };
 
+
   const deleteProduct = async (id) => {
     if (confirm("Are you sure want to delete this product?")) {
       try {
-        const deleted = await axios.delete(
+        await axios.delete(
           `http://localhost:8000/deleteProduct/${id}`,
           { headers: { Authorization: loginCredentials.token } }
         );
@@ -102,12 +123,13 @@ const Products = ({ setSelected }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        overflowX:'scroll'
       }}
     >
       <Box style={{ fontSize: "30px", marginLeft: 10 }}>
         All Products
       </Box>
-
+<ToastContainer/>
       <Box
         style={{
           width: "100%",
@@ -154,7 +176,7 @@ const Products = ({ setSelected }) => {
               <TableRow>
                 <TableCell>SN</TableCell>
                 <TableCell>Short Title</TableCell>
-                <TableCell>MRP</TableCell>
+                <TableCell>Category</TableCell>
                 <TableCell>Cost</TableCell>
                 <TableCell>Discount</TableCell>
                 <TableCell>Quantity</TableCell>
@@ -165,10 +187,10 @@ const Products = ({ setSelected }) => {
             <TableBody>
               {slicedProducts.map((product, index) => (
                 <TableRow key={product._id}>
-                  {console.log(product._id, "lau lau")}
+                  {/* {console.log(product._id, "lau lau")} */}
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{product.title.shortTitle}</TableCell>
-                  <TableCell>{product.price.mrp}</TableCell>
+                  <TableCell>{product.category}</TableCell>
                   <TableCell>{product.price.cost}</TableCell>
                   <TableCell>{product.price.discount}</TableCell>
                   <TableCell>{product.quantity}</TableCell>
@@ -180,7 +202,7 @@ const Products = ({ setSelected }) => {
                     />
                   </TableCell>
                   <TableCell>
-                    {console.log(product._id, "kkkk")}
+                    {/* {console.log(product._id, "kkkk")} */}
                     <Button
                       variant="outlined"
                       color="primary"
@@ -228,5 +250,8 @@ const Products = ({ setSelected }) => {
     </Box>
   );
 };
-
+ 
 export default Products;
+
+
+

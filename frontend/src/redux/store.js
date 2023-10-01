@@ -7,6 +7,13 @@ import { handleLoginDialog } from './reducers/handleLoginDialog';
 import { searchResults } from './reducers/searchResults';
 import { filterValue } from './reducers/filterValue';
 import {users} from './reducers/users';
+import { cart } from './reducers/cart';
+import {order} from './reducers/order';
+import { authToast } from './reducers/authToast';
+import { cartToast } from './reducers/cartToast';
+import { productToast } from './reducers/productToast';
+import { navload } from './reducers/navload';
+import { getDashboardData } from './reducers/getDashboard';
 
 
 const rootReducer = combineReducers({
@@ -16,6 +23,13 @@ const rootReducer = combineReducers({
     searchResults,
     filterValue,
     users,
+    cart,
+    order,
+    authToast,
+    cartToast,
+    productToast,
+    navload,
+    getDashboardData,
 });
 
 const store = createStore(

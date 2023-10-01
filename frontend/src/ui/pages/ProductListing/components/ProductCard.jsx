@@ -2,10 +2,13 @@ import styled from "@emotion/styled";
 import { Box, Menu, Typography } from "@mui/material";
 
 const Img = styled('img')`
-    width:250px;
-    height:auto;
-    max-height:280px;
+    /* width:250px; */
+    width: auto;
+    height:270px;
+    max-width: 250px;
+    /* max-height:280px; */
     border-radius: 2px;
+    
 `
 
 const ProductCard = ({url,mrp,cost,tagline}) => {
@@ -14,6 +17,7 @@ const ProductCard = ({url,mrp,cost,tagline}) => {
           style={{
             display: "flex",
             flexDirection: "column",
+            
             width: "300px",
             // backgroundColor: "green",
             paddingLeft:'10px',
@@ -23,12 +27,12 @@ const ProductCard = ({url,mrp,cost,tagline}) => {
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
           }}
         >
-            <Box style ={{height:'275px'}}>
+            <Box style ={{height:'275px',width:280,textAlign:'center',margin:'0 auto'}}>
 
           <Img
             src={url}
             alt=""
-            style={{ }}
+            
             />
             </Box>
           <Typography style={{fontSize:12,color:'#BDBDBD',margin:'10px 0 0 0'}}>Sponsored</Typography>

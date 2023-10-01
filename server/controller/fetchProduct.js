@@ -86,10 +86,10 @@ const fetchProductBySeller = async(request,response)=>{
     try{
         console.log()
         const products = await ProductSchema.find({createdBy: new mongoose.Types.ObjectId(request.user._id)})
-        console.log(products,"love")
+        // console.log(products,"love")
         return response.status(200).json({message:products})
     }catch(error){
-        console.log("Error",error)
+        // console.log("Error",error)
     }
 
 }
@@ -140,7 +140,7 @@ const updateProduct = async (request,response)=>{
                 price: {
                   "mrp": productData.mrp,
                   "cost": productData.cost,
-                  "discount": productData.discount
+                  "discount": Number(productData.mrp) - Number(productData.cost)
                 },
                 quantity: productData.quantity,
                 description: productData.description,

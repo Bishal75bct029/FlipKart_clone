@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import React from "react";
 
-const ShowInfo = ({data}) => {
+const ShowInfo = ({title,dashboardData}) => {
   return (
     <Box
       style={{
@@ -17,11 +17,11 @@ const ShowInfo = ({data}) => {
         <ShoppingCartIcon />
         <Box style ={{margin:'0 10px'}}>
           <Typography
-            style={{ color: "#1a214", fontSize: "15px", fontWeight: "600",marginBottom:' 3px' }}
+            style={{ color: "#333333", fontSize: "15px", fontWeight: "600",marginBottom:' 3px' }}
           >
-            New Orders
+            {title}
           </Typography>
-          <Typography style={{fontSize:20,fontWeight:700,color:'#1a2142',marginBottom:'4px'}}>34567</Typography>
+          <Typography style={{fontSize:20,fontWeight:700,color:'#ADD8E6',marginBottom:'4px'}}>₹{dashboardData}</Typography>
           <Typography style={{color:'#219653',fontSize:14,fontWeight:400}}>+2.0%<span style={{color:'#5d657b',fontWeight:400}}>(30days)</span></Typography>
         </Box>
       </Box>
