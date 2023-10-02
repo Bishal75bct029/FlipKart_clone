@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.post('/',validateLogin);
 
-router.get('/getProducts',fetchProduct);
+router.get('https://flipkartclonephserveri.vercel.app/getProducts',fetchProduct);
 router.get('/getProduct/:id?',fetchSingleProduct)
 
 router.get('/forget_password',forgetPassword);
