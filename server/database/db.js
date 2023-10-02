@@ -13,7 +13,7 @@ const database = async () => {
     return;
   }
   try {
-    const url = `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.vkwekto.mongodb.net/FlipKart`;
+    const url = `mongodb+srv://bishallc175:FlipKart@cluster0.vkwekto.mongodb.net/FlipKart`;
     await mongoose.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
