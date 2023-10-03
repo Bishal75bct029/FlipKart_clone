@@ -7,7 +7,7 @@
     },
     {
       "src": "product_images/**",
-      "use": "@vercel/static"
+      "use": "@vercel/product_images"
     }
   ],
   "routes": [

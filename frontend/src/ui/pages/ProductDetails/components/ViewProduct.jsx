@@ -220,6 +220,7 @@ const ViewProduct = () => {
     <Box>
         <ResponsiveBox>
         <ResponsiveBox2>
+          {'love'}
           <ImageSection>
             {product && (
               <img
