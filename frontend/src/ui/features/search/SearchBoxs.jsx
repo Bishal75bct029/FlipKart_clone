@@ -61,7 +61,7 @@ const SearchBoxs = () => {
     const suggest = async () => {
       try {
         let response;
-        const apiUrl = `http://localhost:8000/search?suggestion=${
+        const apiUrl = `https://flip-kart-clone-ojm5.vercel.app//search?suggestion=${
           searchValue ? searchValue : ""
         }`;
         console.log("search value", searchValue);
@@ -85,7 +85,7 @@ const SearchBoxs = () => {
     if(searchValue){
       console.log("hello handle",searchValue)
       dispatch({type:FILTER_SUCCESS,payload:{minValue:0,maxValue:10001}})
-       dispatch(SearchProduct(`http://localhost:8000/search?search=${searchValue}`));
+       dispatch(SearchProduct(`https://flip-kart-clone-ojm5.vercel.app//search?search=${searchValue}`));
        setSearchValue('')
     }
   }

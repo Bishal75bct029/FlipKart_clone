@@ -54,7 +54,7 @@ const Users = ({ setSelected }) => {
           }
         }
 
-        const deleted = await axios.delete(`http://localhost:8000/deleteUser/${id}`,headers)
+        const deleted = await axios.delete(`https://flip-kart-clone-ojm5.vercel.app//deleteUser/${id}`,headers)
         dispatch(getUsers())
       }else{
         return; 

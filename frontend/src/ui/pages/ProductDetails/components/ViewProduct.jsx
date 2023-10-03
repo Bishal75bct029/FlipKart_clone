@@ -174,13 +174,13 @@ const ViewProduct = () => {
       const token = `${loginCredentials.token}`;
       console.log(token, "ma ta token ho");
       const cartApi = await axios.post(
-        `http://localhost:8000/cart/${id}`,
+        `https://flip-kart-clone-ojm5.vercel.app//cart/${id}`,
         { quantity },
         { headers: { authorization: token } }
       );
       console.log("successfully added to the cart");
       dispatch({ type: CART_SUCCESS_TOAST });
-      const response = await axios.get(`http://localhost:8000/cart_data`, {
+      const response = await axios.get(`https://flip-kart-clone-ojm5.vercel.app//cart_data`, {
         headers: { authorization: token },
       });
       dispatch({ type: ADDED_TO_CART, payload: response.data.cartItems });
@@ -194,7 +194,7 @@ const ViewProduct = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const apiUrl = `http://localhost:8000/getProduct/${id ? id : ""}`;
+      const apiUrl = `https://flip-kart-clone-ojm5.vercel.app//getProduct/${id ? id : ""}`;
 
       try {
         const response = await axios.get(apiUrl);

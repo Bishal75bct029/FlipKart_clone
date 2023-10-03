@@ -16,7 +16,7 @@ const VerifyUser = () => {
       if (!email && !token) {
         navigate("/");
       } else {
-        const userSignUp = axios.post(`http://localhost:8000/signup?token=${token}&email=${email}`,null)
+        const userSignUp = axios.post(`https://flip-kart-clone-ojm5.vercel.app//signup?token=${token}&email=${email}`,null)
       }
     };
     validateUser();

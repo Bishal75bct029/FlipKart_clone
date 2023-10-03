@@ -14,7 +14,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LoginBtn from "../features/login-signup/LoginBtn";
 import UsernameProvider from "../../usecontext/UsernameProvider";
 import SearchBoxs from "../features/search/SearchBoxs";
-import { useTheme } from "@emotion/react";
+import { useTheme } from "'@mui/material/styles";
 import Seller from "../features/login-signup/Seller";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,7 @@ import { OPEN } from "../../redux/constants/handleLoginDialog";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { LOGIN_FAILURE, LOGIN_SUCCESS } from "../../redux/constants/userLogin";
+import { apiUrl } from "../../constant/apiUrl";
 
 const StyledHeader = styled(AppBar)`
   background-color: #2874f0;
@@ -129,7 +130,7 @@ const Navbar = () => {
         const headers = {
           'Authorization':`${token}`
         }
-        const checkLogin = await axios.post('http://localhost:8000/',null,{headers:headers})
+        const checkLogin = await axios.post(apiUrl,null,{headers:headers})
         console.log("love you")
         console.log(checkLogin.data);
         setIsLogin("loggedIn")

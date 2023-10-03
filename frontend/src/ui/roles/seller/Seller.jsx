@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SideNav from "../components/SideNav";
 import Dashboard from "./Dashboard";
-import { ThemeProvider } from "@emotion/react";
+import { ThemeProvider } from "@mui/material/styles";
 import { Theme } from "../../theme/customeTheme";
 import Order from "./Order";
 import Products from "./Products";
@@ -33,7 +33,7 @@ const Seller = () => {
         const headers = {
           Authorization: `${token}`,
         };
-        const checkLogin = await axios.post("http://localhost:8000/", null, {
+        const checkLogin = await axios.post("https://flip-kart-clone-ojm5.vercel.app//", null, {
           headers: headers,
         });
         console.log("love you");

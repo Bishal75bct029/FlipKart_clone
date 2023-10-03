@@ -1,0 +1,1 @@
+export const apiUrl = 'https://flip-kart-clone-ojm5.vercel.app/'

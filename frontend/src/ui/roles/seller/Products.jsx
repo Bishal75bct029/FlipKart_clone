@@ -41,7 +41,7 @@ const Products = ({ setSelected }) => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/getSellerProducts",
+          "https://flip-kart-clone-ojm5.vercel.app//getSellerProducts",
           { headers: { Authorization: loginCredentials.token } }
         );
         setProducts(response.data.message);
@@ -93,11 +93,11 @@ const Products = ({ setSelected }) => {
     if (confirm("Are you sure want to delete this product?")) {
       try {
         await axios.delete(
-          `http://localhost:8000/deleteProduct/${id}`,
+          `https://flip-kart-clone-ojm5.vercel.app//deleteProduct/${id}`,
           { headers: { Authorization: loginCredentials.token } }
         );
         const response = await axios.get(
-          "http://localhost:8000/getSellerProducts",
+          "https://flip-kart-clone-ojm5.vercel.app//getSellerProducts",
           { headers: { Authorization: loginCredentials.token } }
         );
         setProducts(response.data.message);

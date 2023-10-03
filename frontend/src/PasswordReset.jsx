@@ -13,7 +13,7 @@ const PasswordReset = () => {
   const queryParams = queryString.parse(location.search);
   const token = queryParams.token;
   const email = queryParams.email;
-  fetch(`http://localhost:8000/reset_password?token=${token}&email=${email}`)
+  fetch(`https://flip-kart-clone-ojm5.vercel.app//reset_password?token=${token}&email=${email}`)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -69,7 +69,7 @@ const PasswordReset = () => {
     };
     try {
       const response = await axios.post(
-        "http://localhost:8000/password_changed",
+        "https://flip-kart-clone-ojm5.vercel.app//password_changed",
         data
       );
       const success =  toast.success("Password changed successfully", {

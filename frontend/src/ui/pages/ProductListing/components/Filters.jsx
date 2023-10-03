@@ -130,7 +130,7 @@ console.log(maximumPrice,'kyakyahota hai')
       console.log("handleFilter", newFilterValue);
       dispatch(
         SearchProduct(
-          `http://localhost:8000/search?search=${searchParam}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+          `https://flip-kart-clone-ojm5.vercel.app//search?search=${searchParam}&minPrice=${minPrice}&maxPrice=${maxPrice}`
         )
       );
     }

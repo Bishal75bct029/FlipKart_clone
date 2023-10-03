@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import { Box, Menu, Typography } from "@mui/material";
+
+import { Box, Menu, Typography, styled } from "@mui/material";
 
 const Img = styled('img')`
     /* width:250px; */
@@ -10,6 +10,7 @@ const Img = styled('img')`
     border-radius: 2px;
     
 `
+
 
 const ProductCard = ({url,mrp,cost,tagline}) => {
   return (

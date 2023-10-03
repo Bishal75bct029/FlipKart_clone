@@ -46,13 +46,13 @@ const OrderForm = ({ open, setOpen,setSuccess, }) => {
     console.log("Form data:", formData);
     try{
 
-        await axios.post(`http://localhost:8000/send_order`,formData,{headers:{Authorization:loginCredentials.token}});
+        await axios.post(`https://flip-kart-clone-ojm5.vercel.app//send_order`,formData,{headers:{Authorization:loginCredentials.token}});
         dispatch({type:ORDER_SUCCESS_TOAST})
         setOpen(false); 
         setFormData({shippingAddress:"",paymentStatus:"notPaid"});
         try{
 
-          const response = await axios.get(`http://localhost:8000/cart_data`,{headers:{Authorization:loginCredentials.token}})
+          const response = await axios.get(`https://flip-kart-clone-ojm5.vercel.app//cart_data`,{headers:{Authorization:loginCredentials.token}})
           dispatch({type:ADDED_TO_CART,payload:response.data.cartItems});
         }catch(error){
           console.log(error)

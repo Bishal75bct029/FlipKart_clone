@@ -31,7 +31,7 @@ const Dashboard = ({ value, setSelected }) => {
     const fetchDashboardData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/backend_orders?orderType=all",
+          "https://flip-kart-clone-ojm5.vercel.app//backend_orders?orderType=all",
           { headers: { Authorization: loginCredentials.token } }
         );
         console.log(response.data, "haha");

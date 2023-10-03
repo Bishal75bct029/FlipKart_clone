@@ -188,7 +188,7 @@ const LoginDialog = () => {
     if (!mailFormErr) {
       try {
         const response = await axios.get(
-          `http://localhost:8000/forget_password?email=${frgotPwdData}`
+          `https://flip-kart-clone-ojm5.vercel.app//forget_password?email=${frgotPwdData}`
         );
 
         setFeedbckRstPwd({ info: response.data.message, type: "success" });
