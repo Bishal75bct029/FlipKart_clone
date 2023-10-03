@@ -14,7 +14,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LoginBtn from "../features/login-signup/LoginBtn";
 import UsernameProvider from "../../usecontext/UsernameProvider";
 import SearchBoxs from "../features/search/SearchBoxs";
-import { useTheme } from "'@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import Seller from "../features/login-signup/Seller";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
