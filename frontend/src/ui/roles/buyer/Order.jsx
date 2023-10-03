@@ -32,7 +32,7 @@ const Order = () => {
           console.log(response.data.orderItems);
           setLoading("loaded")
           const cartResponse = await axios.get(
-            `https://flip-kart-clone-9xew.vercel.app//cart_data`,
+            `https://flip-kart-clone-9xew.vercel.app/cart_data`,
             { headers: { Authorization: loginCredentials.token } }
           );
           dispatch({

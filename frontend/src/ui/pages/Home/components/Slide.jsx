@@ -168,7 +168,7 @@ const Slide = ({ products, title, selected,category }) => {
                     }}
                     key={product._id}
                   >
-                    <Img src={product.image} alt="haha" />
+                    <Img src={`https://flip-kart-clone-9xew.vercel.app/product_images/Seller 1/gifts/1696057766301.jpeg`} alt="haha" />
 
                     <Typography
                       style={{
