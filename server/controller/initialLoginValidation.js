@@ -7,7 +7,6 @@ const validateLogin = async(request,response) =>{
         let token = request.headers.authorization;
         token = token.split(" ");
         token = token[1];
-        // console.log(token, "haha");
         jwt.verify(token, "flipkartClone", async(error, decodedToken) => {
         if (error) {
         console.log("Token error", error);

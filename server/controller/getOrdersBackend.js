@@ -31,9 +31,10 @@ const getBackendOrders = async (request, response) => {
             {
               $or: [
                 {
-                  "product.createdBy": new mongoose.Types.ObjectId(
-                    request.user._id
-                  ),
+                  ...(request.user.role === "admin"
+                  ?{}
+                  :{"product.createdBy": new mongoose.Types.ObjectId(request.user._id)}
+                  )
                 },
                 { "user._id": new mongoose.Types.ObjectId(request.user._id) },
               ],
@@ -53,7 +54,6 @@ const getBackendOrders = async (request, response) => {
     let totalTodayCost = 0;
 
     orderItems.forEach((order) => {
-      // const orderCost = order.quantity * order.product[0].price; // Assuming you have a price field in your products
 
       if (order.status === "pending") {
         totalPendingCost += order.product[0].price.cost;
@@ -88,9 +88,10 @@ const getBackendOrders = async (request, response) => {
             {
               $or: [
                 {
-                  "product.createdBy": new mongoose.Types.ObjectId(
-                    request.user._id
-                  ),
+                  ...(request.user.role === "admin"
+                  ?{}
+                  :{"product.createdBy": new mongoose.Types.ObjectId(request.user._id)}
+                  )
                 },
                 { "user._id": new mongoose.Types.ObjectId(request.user._id) },
               ],

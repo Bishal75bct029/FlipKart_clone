@@ -6,7 +6,6 @@ const { mongoose } = require("mongoose");
 const createOrder = async (request, response) => {
   try {
     const data = request.body;
-    // console.log("iamdata", data);
     const shippingAddress = data.shippingAddress;
     const paymentStatus = data.paymentStatus;
 
@@ -14,13 +13,11 @@ const createOrder = async (request, response) => {
     let insertingData;
 
     if (Array.isArray(fetchCart) && fetchCart.length > 0) {
-      // console.log("fetchCart", fetchCart);
       const insertingData = fetchCart.map((cart_item, index) => {
         cart_item = cart_item.toObject();
         delete cart_item._id;
         return { ...cart_item, shippingAddress, paymentStatus };
       });
-      // console.log(insertingData);
       await OrderSchema.create(insertingData);
 
       await CartSchema.deleteMany({ createdBy: request.user._id });
@@ -31,7 +28,6 @@ const createOrder = async (request, response) => {
     }
     return response.status(200).json({ message: "No items in the cart" });
   } catch (error) {
-    // console.log(error, "here i am");
     return response.status(500).json({ message: "Server Error" });
   }
 };
@@ -88,7 +84,6 @@ const getOrders = async (request, response) => {
         },
       ]);
     }
-    console.log(request.user.role);
     if (Array.isArray(orderItems)) {
       const filteredOrders = orderItems.filter((order) => order.productID);
       // console.log(filteredOrders, filteredOrders.length);
@@ -123,6 +118,7 @@ const changeOrderStatus = async (request, response) => {
     return response.status(500).json({ message: error });
   }
 };
+
 const deleteOrder = async(request,response)=>{
   try{
     const id = request.params.id;

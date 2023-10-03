@@ -29,14 +29,12 @@ const createUser = async (request, response) => {
   const userExist = await UserSchema.findOne({
     $or: [{ username: request.body.username }, { email: request.body.email }],
   });
-  // userExist = userExist.toObject()
   if (userExist) {
     if(userExist.status === 'unverified'){
       return response.status(400).send('You are already registered. Please verify your mail.')
     }
     return response.status(400).send("Username or email already exist");
-    console.log("Already there bb", userExist);
-    // return;
+    
   }
   let signUpData;
   console.log(request.body.seller)
@@ -77,8 +75,6 @@ sendMail(verifyLink,"Verify your mail",signUpData.email)
 return response.status(200).send("Email has been sent successfully. Verify your mail");
 
 
-  console.log("haha");
-  console.log(request.body,"gandulaal");
 }else{
   console.log(request.query.token,'xa ra',request.query.email,'email pani')
   if(request.query.token && request.query.email){
