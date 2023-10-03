@@ -6,7 +6,7 @@ import { LOGIN_SUCCESS_TOASTIFY,LOGIN_FAILURE_TOASTIFY } from "../constants/auth
 export const login = (loginData,setLoginData,setLoginFormError) => async(dispatch)=>{
     try {
         console.log(loginData,'logindata aaena ra bishal don')
-        let response = await axios.post("http://localhost:8000/login", loginData);
+        let response = await axios.post("https://flip-kart-clone-9xew.vercel.app/login", loginData);
         console.log("k xa")
         if (response.status === 200) {
           const responseData = JSON.parse(response.data);

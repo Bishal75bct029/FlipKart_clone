@@ -26,7 +26,7 @@ const Order = () => {
     const getOrders = async () => {
       try {
         if (loginCredentials.token) {
-          const response = await axios.get(`https://flip-kart-clone-9xew.vercel.app//get_orders`, {
+          const response = await axios.get(`https://flip-kart-clone-9xew.vercel.app/get_orders`, {
             headers: { Authorization: loginCredentials.token },
           });
           console.log(response.data.orderItems);
