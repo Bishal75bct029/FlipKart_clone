@@ -1,5 +1,5 @@
 import { useLocation } from "react-router";
-import queryString from "query-string";
+import queryString from "querystring";
 import { useState } from "react";
 import { Typography, Button, Grid, Box, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
