@@ -6,7 +6,7 @@
       "use": "@vercel/node"
     },
     {
-      "src": "product_images/**",
+      "src": "product_images/Seller 1/gifts/1696057766301.jpeg/**",
       "use": "@vercel/static"
     }
   ],
