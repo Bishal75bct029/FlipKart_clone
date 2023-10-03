@@ -77,7 +77,7 @@ const AddProduct = ({ open, handleClose, action, id, setSuccess }) => {
       console.log("hi");
 
       if (action === "updateProduct") {
-        const apiUrl = `https://flip-kart-clone-ojm5.vercel.app//getProduct/${id ? id : ""}`;
+        const apiUrl = `https://flip-kart-clone-9xew.vercel.app//getProduct/${id ? id : ""}`;
         console.log(apiUrl, "timro mann");
 
         try {
@@ -176,7 +176,7 @@ const AddProduct = ({ open, handleClose, action, id, setSuccess }) => {
     });
     console.log(product, "aako xa ra");
     if (action === "newProduct") {
-      fetch("https://flip-kart-clone-ojm5.vercel.app//post_product", {
+      fetch("https://flip-kart-clone-9xew.vercel.app//post_product", {
         method: "POST",
         headers: {
           authorization: userDetails.token,
@@ -208,7 +208,7 @@ const AddProduct = ({ open, handleClose, action, id, setSuccess }) => {
           console.error("Error adding product:", error);
         });
     } else {
-      fetch(`https://flip-kart-clone-ojm5.vercel.app//updateProduct/${id}`, {
+      fetch(`https://flip-kart-clone-9xew.vercel.app//updateProduct/${id}`, {
         method: "PUT",
         headers: {
           authorization: userDetails.token,

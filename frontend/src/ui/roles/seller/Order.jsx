@@ -49,7 +49,7 @@ const Order = ({ setSelected }) => {
           return;
         }
         const change = await axios.put(
-          `https://flip-kart-clone-ojm5.vercel.app//change_order_status/${id}`,
+          `https://flip-kart-clone-9xew.vercel.app//change_order_status/${id}`,
           { status: status },
           { headers: { Authorization: loginCredentials.token } }
         );
@@ -85,7 +85,7 @@ const Order = ({ setSelected }) => {
       try {
         console.log("haha");
         const orders = await axios.get(
-          `https://flip-kart-clone-ojm5.vercel.app//get_orders?orderType=${orderType}`,
+          `https://flip-kart-clone-9xew.vercel.app//get_orders?orderType=${orderType}`,
           { headers: { Authorization: loginCredentials.token } }
         );
         console.log(orders.data);
@@ -105,7 +105,7 @@ const Order = ({ setSelected }) => {
       if (!confirm("Are you sure want to delete this order?")) {
         return;
       }
-      await axios.delete(`https://flip-kart-clone-ojm5.vercel.app//delete_order/${id}`, {
+      await axios.delete(`https://flip-kart-clone-9xew.vercel.app//delete_order/${id}`, {
         headers: { Authorization: loginCredentials.token },
       });
       setSuccess(success + 1);

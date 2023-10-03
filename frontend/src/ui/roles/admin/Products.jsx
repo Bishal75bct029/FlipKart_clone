@@ -53,7 +53,7 @@ const  Products = ({setSelected}) => {
             Authorization:loginCredentials.token
           }
         }
-        const deleted = await axios.delete(`https://flip-kart-clone-ojm5.vercel.app//deleteProduct/${id}`,headers);
+        const deleted = await axios.delete(`https://flip-kart-clone-9xew.vercel.app//deleteProduct/${id}`,headers);
         dispatch(getProducts());
         // console.log(headers,'headers')
         

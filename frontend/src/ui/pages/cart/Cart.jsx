@@ -22,7 +22,7 @@ const Cart = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await axios.get(`https://flip-kart-clone-ojm5.vercel.app//cart_data`, {
+        const response = await axios.get(`https://flip-kart-clone-9xew.vercel.app//cart_data`, {
           headers: { Authorization: loginCredentials.token },
         });
         console.log(response.data.cartItems, "gaddi");

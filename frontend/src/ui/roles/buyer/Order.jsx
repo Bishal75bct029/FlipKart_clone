@@ -26,13 +26,13 @@ const Order = () => {
     const getOrders = async () => {
       try {
         if (loginCredentials.token) {
-          const response = await axios.get(`https://flip-kart-clone-ojm5.vercel.app//get_orders`, {
+          const response = await axios.get(`https://flip-kart-clone-9xew.vercel.app//get_orders`, {
             headers: { Authorization: loginCredentials.token },
           });
           console.log(response.data.orderItems);
           setLoading("loaded")
           const cartResponse = await axios.get(
-            `https://flip-kart-clone-ojm5.vercel.app//cart_data`,
+            `https://flip-kart-clone-9xew.vercel.app//cart_data`,
             { headers: { Authorization: loginCredentials.token } }
           );
           dispatch({

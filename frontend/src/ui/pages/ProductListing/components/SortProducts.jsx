@@ -42,16 +42,16 @@ const SortProducts = ({type}) => {
       if(filters.minValue != 0 || filters.maxValue != 99999999){
         console.log("k xa")
         
-        apiUrl = `https://flip-kart-clone-ojm5.vercel.app//sortProducts?sort=${types}&search=${searchParam}&minPrice=${filters.minValue}&maxPrice=${filters.maxValue}`
+        apiUrl = `https://flip-kart-clone-9xew.vercel.app//sortProducts?sort=${types}&search=${searchParam}&minPrice=${filters.minValue}&maxPrice=${filters.maxValue}`
         console.log(apiUrl,'k vayo yr')
       }else{
         
-        apiUrl = `https://flip-kart-clone-ojm5.vercel.app//sortProducts?sort=${types}&search=${searchParam}`
+        apiUrl = `https://flip-kart-clone-9xew.vercel.app//sortProducts?sort=${types}&search=${searchParam}`
       }
     }else{
       
         
-        apiUrl = `https://flip-kart-clone-ojm5.vercel.app//product_by_category?sort=${types}&category=${categoryParam}`
+        apiUrl = `https://flip-kart-clone-9xew.vercel.app//product_by_category?sort=${types}&category=${categoryParam}`
     }
       
         console.log(apiUrl,'honi')

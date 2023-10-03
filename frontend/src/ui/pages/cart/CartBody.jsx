@@ -76,7 +76,7 @@ const CartBody = ({ title, discount, mrp, cost }) => {
   useEffect(() => {
     const fetchCartData = async () => {
       try {
-        const response = await axios.get(`https://flip-kart-clone-ojm5.vercel.app//cart_data`, {
+        const response = await axios.get(`https://flip-kart-clone-9xew.vercel.app//cart_data`, {
           headers: { Authorization: loginCredentials.token },
         });
         dispatch({ type: ADDED_TO_CART, payload: response.data.cartItems });
@@ -91,8 +91,8 @@ const CartBody = ({ title, discount, mrp, cost }) => {
   const handleDelete = async (id) => {
     if (confirm("Are you sure want to delete from cart?")) {
       try {
-        await axios.delete(`https://flip-kart-clone-ojm5.vercel.app//delete_cart/${id}`);
-        const response = await axios.get(`https://flip-kart-clone-ojm5.vercel.app//cart_data`, {
+        await axios.delete(`https://flip-kart-clone-9xew.vercel.app//delete_cart/${id}`);
+        const response = await axios.get(`https://flip-kart-clone-9xew.vercel.app//cart_data`, {
           headers: { Authorization: loginCredentials.token },
         });
         console.log(response, "gaddi");

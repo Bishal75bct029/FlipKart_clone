@@ -23,10 +23,10 @@ const ProductsView = ({type}) => {
   if(type === 'search'){
 
     let searchParam = queryParams.search
-    apiUrl = `https://flip-kart-clone-ojm5.vercel.app//search?search=${searchParam}`
+    apiUrl = `https://flip-kart-clone-9xew.vercel.app//search?search=${searchParam}`
   }else if(type ==='category'){
     let categoryParam = queryParams.category;
-    apiUrl = `https://flip-kart-clone-ojm5.vercel.app//product_by_category?category=${categoryParam}`;
+    apiUrl = `https://flip-kart-clone-9xew.vercel.app//product_by_category?category=${categoryParam}`;
   }
   useEffect(()=>{
     

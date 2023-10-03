@@ -7,12 +7,13 @@ import {
   TextField,
   Typography,
   withStyles,
+  styled
 } from "@mui/material";
 import { useState } from "react";
 import * as React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import styled from "@emotion/styled";
+// import styled from "@emotion/styled";
 import { SearchProduct } from "../../../../redux/actions/searchResult";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
@@ -130,7 +131,7 @@ console.log(maximumPrice,'kyakyahota hai')
       console.log("handleFilter", newFilterValue);
       dispatch(
         SearchProduct(
-          `https://flip-kart-clone-ojm5.vercel.app//search?search=${searchParam}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+          `https://flip-kart-clone-9xew.vercel.app//search?search=${searchParam}&minPrice=${minPrice}&maxPrice=${maxPrice}`
         )
       );
     }

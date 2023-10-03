@@ -33,7 +33,7 @@ const Seller = () => {
         const headers = {
           Authorization: `${token}`,
         };
-        const checkLogin = await axios.post("https://flip-kart-clone-ojm5.vercel.app//", null, {
+        const checkLogin = await axios.post("https://flip-kart-clone-9xew.vercel.app//", null, {
           headers: headers,
         });
         console.log("love you");

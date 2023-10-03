@@ -162,7 +162,7 @@ const Navbar = () => {
               <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
                 <Box style={{ cursor: "pointer" }}>
                   <img
-                    src="http://localhost:5173/static/images/flipkartlogo.png"
+                    src="https://flip-kart-clone-9xew.vercel.app//static/images/flipkartlogo.png"
                     style={{ height: 20 }}
                     alt="logo"
                     />
@@ -173,7 +173,7 @@ const Navbar = () => {
                       Plus
                     </Box>
                     <PlusLogo
-                      src="http://localhost:5173/static/images/plus.png"
+                      src="/static/images/plus.png"
                       alt="plus"
                       />
                   </LogoText>
