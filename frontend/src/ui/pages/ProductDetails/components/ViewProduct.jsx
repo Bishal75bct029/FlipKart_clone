@@ -1,7 +1,7 @@
 import { Box, Button, Typography, styled } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/Navbar";
-// import styled from "@emotion/styled";
+
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import StarIcon from "@mui/icons-material/Star";

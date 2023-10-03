@@ -13,7 +13,7 @@ import { useState } from "react";
 import * as React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-// import styled from "@emotion/styled";
+
 import { SearchProduct } from "../../../../redux/actions/searchResult";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
